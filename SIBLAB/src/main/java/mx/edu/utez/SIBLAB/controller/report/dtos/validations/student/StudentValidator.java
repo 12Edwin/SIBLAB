@@ -1,4 +1,4 @@
-package mx.edu.utez.SIBLAB.controller.user.dtos.validations.teacher;
+package mx.edu.utez.SIBLAB.controller.report.dtos.validations.student;
 
 import mx.edu.utez.SIBLAB.models.user.User;
 import mx.edu.utez.SIBLAB.models.user.UserRepository;
@@ -8,24 +8,21 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Optional;
 
-public class TeacherValidator implements ConstraintValidator<ValidTeacher, User> {
+public class StudentValidator implements ConstraintValidator<ValidStudent,User> {
     @Autowired
     private UserRepository repository;
 
     @Override
-    public void initialize(ValidTeacher constraintAnnotation){
+    public void initialize(ValidStudent constraintAnnotation){
     }
 
     @Override
     public boolean isValid(User value, ConstraintValidatorContext constraintContext){
-        if (value == null){
-            return true;
-        }
         if (!this.repository.existsById(value.getId())){
             return false;
         }
-        Optional <User> user = this.repository.findById(value.getId());
+        Optional<User> user = this.repository.findById(value.getId());
 
-        return user.get().getRole().equals("Teacher");
+        return user.get().getRole().equals("Student");
     }
 }

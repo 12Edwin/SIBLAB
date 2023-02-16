@@ -1,7 +1,6 @@
 package mx.edu.utez.SIBLAB.controller.user;
 
 import mx.edu.utez.SIBLAB.controller.user.dtos.UserDto;
-import mx.edu.utez.SIBLAB.controller.user.dtos.UserDtoUpdate;
 import mx.edu.utez.SIBLAB.models.user.User;
 import mx.edu.utez.SIBLAB.service.user.UserService;
 import mx.edu.utez.SIBLAB.utils.CustomResponse;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.tags.Param;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -49,8 +47,8 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}",produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<User>> update(@Valid @RequestBody UserDtoUpdate user, @PathVariable Long id){
+    public @ResponseBody ResponseEntity<CustomResponse<User>> update(@Valid @RequestBody UserDto user, @PathVariable Long id){
         user.setId(id);
-        return new ResponseEntity<>(this.service.update(user.castToUserForUpdate()),HttpStatus.OK);
+        return new ResponseEntity<>(this.service.update(user.castToUser()),HttpStatus.OK);
     }
 }

@@ -24,6 +24,7 @@ public class Report {
     @Column(nullable = false)
     private Date time_Register;
     private Date time_Finish;
+    private String info;
     //Relationship with users
     @ManyToOne
     @JoinColumn(name = "id_user",nullable = false)
@@ -31,6 +32,6 @@ public class Report {
 
     //Relationship with machine
     @OneToOne
-    @JoinColumn(name = "id_machine",nullable = false)
+    @JoinColumn(name = "id_machine", nullable = false)
     private Machine machine;
 }

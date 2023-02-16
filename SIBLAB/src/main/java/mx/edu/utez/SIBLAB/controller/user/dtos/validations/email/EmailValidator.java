@@ -1,6 +1,6 @@
 package mx.edu.utez.SIBLAB.controller.user.dtos.validations.email;
 
-import mx.edu.utez.SIBLAB.controller.user.dtos.validations.RepositoryValidation;
+import mx.edu.utez.SIBLAB.models.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class EmailValidator implements ConstraintValidator<ValidEmail,String> {
     @Autowired
-    private RepositoryValidation repository;
+    private UserRepository repository;
 
     @Override
     public void initialize(ValidEmail constraintAnnotation){

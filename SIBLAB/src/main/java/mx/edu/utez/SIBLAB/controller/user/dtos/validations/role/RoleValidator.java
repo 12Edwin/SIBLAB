@@ -3,13 +3,12 @@ package mx.edu.utez.SIBLAB.controller.user.dtos.validations.role;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import mx.edu.utez.SIBLAB.controller.user.dtos.validations.RepositoryValidation;
-import mx.edu.utez.SIBLAB.controller.user.dtos.validations.RepositoryValidationRole;
+import mx.edu.utez.SIBLAB.models.role.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class RoleValidator implements ConstraintValidator<ValidRole,String> {
     @Autowired
-    private RepositoryValidationRole repository;
+    private RoleRepository repository;
     @Override
     public void initialize(ValidRole constraintAnnotation){
     }

@@ -1,6 +1,6 @@
 package mx.edu.utez.SIBLAB.controller.user.dtos.validations.classroom;
 
-import mx.edu.utez.SIBLAB.controller.user.dtos.validations.RepositoryValidationClassroom;
+import mx.edu.utez.SIBLAB.models.classroom.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class ClassroomValidator implements ConstraintValidator<ValidClassroom,String> {
     @Autowired
-    private RepositoryValidationClassroom repository;
+    private GroupRepository repository;
     @Override
     public void initialize(ValidClassroom constraintAnnotation){
     }

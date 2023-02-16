@@ -1,7 +1,5 @@
 package mx.edu.utez.SIBLAB.controller.user.dtos.validations.code;
 
-import mx.edu.utez.SIBLAB.controller.user.dtos.validations.teacher.TeacherValidator;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;

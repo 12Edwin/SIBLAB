@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.SIBLAB.models.report.Report;
+import net.bytebuddy.utility.nullability.MaybeNull;
 
 import javax.persistence.*;
 
@@ -20,10 +21,12 @@ public class Machine {
     private Long id;
     @Column(nullable = false)
     private String brand;
+    @MaybeNull
+    private String path_image;
     @Column(nullable = false)
     private String model;
     @Column(nullable = false)
-    private boolean status;
+    private Boolean status;
     private String specific_features;
 
     //Relationship with report

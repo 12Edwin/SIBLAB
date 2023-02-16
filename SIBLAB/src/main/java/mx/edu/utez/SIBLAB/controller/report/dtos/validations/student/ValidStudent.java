@@ -1,4 +1,7 @@
-package mx.edu.utez.SIBLAB.controller.user.dtos.validations.teacher;
+package mx.edu.utez.SIBLAB.controller.report.dtos.validations.student;
+
+import mx.edu.utez.SIBLAB.controller.report.dtos.validations.status.StatusValidator;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
@@ -11,10 +14,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = TeacherValidator.class)
+@Constraint(validatedBy = StudentValidator.class)
 @Documented
-public @interface ValidTeacher {
-    String message() default "{mx.edu.utez.SIBLAB.controller.user.dtos.validations.teacher.ValidTeacher.message}";
+public @interface ValidStudent {
+    String message() default "{mx.edu.utez.SIBLAB.controller.report.dtos.validations.student.ValidStudent.message}";
 
     Class<?>[] groups() default {};
 
