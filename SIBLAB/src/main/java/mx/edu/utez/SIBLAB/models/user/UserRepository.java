@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     //Validation Dto
     boolean existsByCode(String code);
+
+    //Auth
+    User findByEmail(String email);
 }

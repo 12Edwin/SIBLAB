@@ -30,12 +30,15 @@ public class MachineService {
         return new CustomResponse<>(this.repository.saveAndFlush(machine),false,200,"Created");
     }
     @Transactional(rollbackFor = {SQLException.class})
-    public CustomResponse<Machine> update(Machine machine, Long id){
-        machine.setId(id);
+    public CustomResponse<Machine> update(Machine machine){
         return new CustomResponse<>(this.repository.saveAndFlush(machine),false,200,"Updaated");
     }
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Boolean> changeStatus(Long id, Boolean status){
         return new CustomResponse<>(this.repository.changeStatusById(id,status),false,200,"Changed");
+    }
+    @Transactional(rollbackFor = {SQLException.class})
+    public CustomResponse<Boolean> patch(Machine machine){
+        return new CustomResponse<>(this.repository.updateImageById(machine.getId(), machine.getPath_image()) == 1,false,200,"Ok");
     }
 }

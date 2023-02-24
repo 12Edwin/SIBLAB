@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,7 @@ public interface ReportRepository extends JpaRepository<Report,Long> {
 
     @Query(value = "SELECT * FROM reports WHERE status = :status", nativeQuery = true)
     List<Report> findAllByStatus(@Param("status") String status);
+    @Modifying
     @Query(value = "update reports SET status = :status WHERE id = :id",nativeQuery = true)
-    boolean changeStatusById(@Param("id")Long id, @Param("status")String status);
+    int changeStatusById(@Param("id")Long id, @Param("status")String status);
 }

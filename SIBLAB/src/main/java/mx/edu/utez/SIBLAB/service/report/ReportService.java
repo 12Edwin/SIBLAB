@@ -45,7 +45,7 @@ public class ReportService {
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Boolean> changeStatus(Long id,String status){
         if (this.repository.existsById(id)){
-            return new CustomResponse<>(this.repository.changeStatusById(id,status),false,200,"Ok");
+            return new CustomResponse<>(this.repository.changeStatusById(id,status) == 1,false,200,"Ok");
         }
         return new CustomResponse<>(null,true,400,"Reporte no encotrado");
     }

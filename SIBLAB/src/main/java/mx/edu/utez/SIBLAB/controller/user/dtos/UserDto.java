@@ -70,10 +70,13 @@ public class UserDto {
     @Length(min = 10,message = "EL código debe ser de 10 caracteres")
     private String code;
 
-    @MaybeNull
-    @ValidTeacher(message = "Profesor no válido")
-    private User id_teacher;
+    private Boolean status;
     public User castToUser(){
-        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),true,getCareer(),getDivision(),getClassroom(),getCode(),getId_teacher(),null );
+        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),true,getCareer(),getDivision(),getClassroom(),getCode(),null );
+    }
+
+    //Report
+    public User castToUserToReport(){
+        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),getStatus(),getCareer(),getDivision(),getClassroom(),getCode(),null);
     }
 }
