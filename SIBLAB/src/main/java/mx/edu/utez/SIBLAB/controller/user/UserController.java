@@ -1,5 +1,6 @@
 package mx.edu.utez.SIBLAB.controller.user;
 
+import mx.edu.utez.SIBLAB.controller.period.dto.PeriodDto;
 import mx.edu.utez.SIBLAB.controller.report.dtos.ReportDto;
 import mx.edu.utez.SIBLAB.controller.user.dtos.UserDto;
 import mx.edu.utez.SIBLAB.models.user.User;
@@ -76,6 +77,16 @@ public class UserController {
                                 report.getInfo(),
                                 report.getAttachment()
                 ).castToReportToUser()).collect(Collectors.toList()));
+        result.get().setPeriods(result.get().getPeriods().stream().map(
+                period -> new PeriodDto(
+                        period.getId(),
+                        period.getSemester(),
+                        period.getStart_semester().toString(),
+                        period.getFinish_semester().toString(),
+                        period.getUser(),
+                        period.getClassrooms()
+                ).castToPeriodToUser()
+        ).collect(Collectors.toList()));
         return result;
     }
     public List<User> castMany(List<User> results){
@@ -88,8 +99,6 @@ public class UserController {
                         user.getEmail(),
                         user.getPassword(),
                         user.getStatus(),
-                        user.getCareer(),
-                        user.getDivision(),
                         user.getClassroom(),
                         user.getCode(),
                         user.getReports().stream().map(
@@ -104,7 +113,17 @@ public class UserController {
                                         report.getMachine(),
                                         report.getInfo(),
                                         report.getAttachment()
-                                ).castToReportToUser()).collect(Collectors.toList())
+                                ).castToReportToUser()).collect(Collectors.toList()),
+                        user.getPeriods().stream().map(
+                                period -> new PeriodDto(
+                                        period.getId(),
+                                        period.getSemester(),
+                                        period.getStart_semester().toString(),
+                                        period.getFinish_semester().toString(),
+                                        period.getUser(),
+                                        period.getClassrooms()
+                                ).castToPeriodToUser()
+                        ).collect(Collectors.toList())
                 )).collect(Collectors.toList());
     }
 }

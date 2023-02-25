@@ -1,13 +1,12 @@
-package mx.edu.utez.SIBLAB.controller.user.dtos.validations.classroom;
+package mx.edu.utez.SIBLAB.controller.attachment.dto.validations.classroom;
 
-import mx.edu.utez.SIBLAB.models.classroom.Classroom;
 import mx.edu.utez.SIBLAB.models.classroom.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ClassroomValidator implements ConstraintValidator<ValidClassroom, Classroom> {
+public class ClassroomValidator implements ConstraintValidator<ValidClassroom,String> {
     @Autowired
     private GroupRepository repository;
     @Override
@@ -15,10 +14,10 @@ public class ClassroomValidator implements ConstraintValidator<ValidClassroom, C
     }
 
     @Override
-    public boolean isValid(Classroom value, ConstraintValidatorContext constraintContext){
+    public boolean isValid(String value, ConstraintValidatorContext constraintContext){
         if (value == null){
             return true;
         }
-        return this.repository.existsById(value.getId());
+        return this.repository.existsByName(value);
     }
 }

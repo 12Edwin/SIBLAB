@@ -71,12 +71,13 @@ public class ReportController {
                         result.get().getMachine().getId(),
                         result.get().getMachine().getBrand(),
                         result.get().getMachine().getPath_image(),
-                        result.get().getMachine().getModel(),
+                        result.get().getMachine().getHard_disk(),
+                        result.get().getMachine().getCpu(),
                         result.get().getMachine().getStatus(),
                         result.get().getMachine().getSpecific_features(),
                         result.get().getMachine().getLaboratory(),
                         result.get().getMachine().getReport()
-                ).castToMachine()
+                ).castToMachineToReport()
         );
         result.get().setUser(
                 new UserDto(
@@ -86,13 +87,12 @@ public class ReportController {
                         result.get().getUser().getEmail(),
                         result.get().getUser().getPassword(),
                         result.get().getUser().getRole(),
-                        result.get().getUser().getCode(),
-                        result.get().getUser().getCareer(),
-                        result.get().getUser().getDivision(),
                         result.get().getUser().getClassroom(),
-                        result.get().getUser().getStatus()
-
-                ).castToUser()
+                        result.get().getUser().getCode(),
+                        result.get().getUser().getStatus(),
+                        result.get().getUser().getPeriods(),
+                        result.get().getUser().getReports()
+                ).castToUserToReport()
         );
         return result;
     }
@@ -112,18 +112,18 @@ public class ReportController {
                                 report.getUser().getEmail(),
                                 report.getUser().getPassword(),
                                 report.getUser().getRole(),
-
-                                report.getUser().getCareer(),
-                                report.getUser().getDivision(),
                                 report.getUser().getClassroom(),
                                 report.getUser().getCode(),
-                                report.getUser().getStatus()
+                                report.getUser().getStatus(),
+                                report.getUser().getPeriods(),
+                                report.getUser().getReports()
                         ).castToUserToReport(),
                         new MachineDto(
                                 report.getMachine().getId(),
                                 report.getMachine().getBrand(),
                                 report.getMachine().getPath_image(),
-                                report.getMachine().getModel(),
+                                report.getMachine().getHard_disk(),
+                                report.getMachine().getCpu(),
                                 report.getMachine().getStatus(),
                                 report.getMachine().getSpecific_features(),
                                 report.getMachine().getLaboratory(),

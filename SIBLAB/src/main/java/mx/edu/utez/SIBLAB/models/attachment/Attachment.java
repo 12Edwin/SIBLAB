@@ -27,6 +27,13 @@ public class Attachment {
 
     @Column(nullable = false)
     private String status;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String group;
+
     //Relationship with report
     @OneToMany(mappedBy = "attachment")
     @JsonIgnore

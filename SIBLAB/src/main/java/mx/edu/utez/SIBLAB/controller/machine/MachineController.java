@@ -2,7 +2,6 @@ package mx.edu.utez.SIBLAB.controller.machine;
 
 import mx.edu.utez.SIBLAB.controller.laboratory.dto.LaboratoryDto;
 import mx.edu.utez.SIBLAB.controller.machine.dtos.MachineDto;
-import mx.edu.utez.SIBLAB.models.laboratory.Laboratory;
 import mx.edu.utez.SIBLAB.models.machine.Machine;
 import mx.edu.utez.SIBLAB.service.machine.MachineService;
 import mx.edu.utez.SIBLAB.utils.CustomResponse;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +66,8 @@ public class MachineController {
                         machine.getId(),
                         machine.getBrand(),
                         machine.getPath_image(),
-                        machine.getModel(),
+                        machine.getCpu(),
+                        machine.getHard_disk(),
                         machine.getStatus(),
                         machine.getSpecific_features(),
                         new LaboratoryDto(

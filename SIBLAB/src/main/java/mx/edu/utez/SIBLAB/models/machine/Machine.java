@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.SIBLAB.models.laboratory.Laboratory;
 import mx.edu.utez.SIBLAB.models.report.Report;
+import mx.edu.utez.SIBLAB.models.user.User;
 import net.bytebuddy.utility.nullability.MaybeNull;
 
 import javax.persistence.*;
@@ -30,7 +31,10 @@ public class Machine {
     private String path_image;
 
     @Column(nullable = false)
-    private String model;
+    private String hard_disk;
+
+    @Column(nullable = false)
+    private String cpu;
 
     @Column(nullable = false)
     private Boolean status;
@@ -42,6 +46,7 @@ public class Machine {
     @OneToMany(mappedBy = "machine",cascade = CascadeType.ALL)
     private List<Report> report;
 
+    //Relationship with laboratory
     @ManyToOne
     @JoinColumn(name = "id_laboratory", nullable = false)
     @JsonIgnore

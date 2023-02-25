@@ -1,11 +1,16 @@
 package mx.edu.utez.SIBLAB.models.classroom;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mx.edu.utez.SIBLAB.models.period.Period;
+import mx.edu.utez.SIBLAB.models.user.User;
+import net.bytebuddy.utility.nullability.MaybeNull;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "classrooms")
@@ -21,5 +26,22 @@ public class Classroom {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String career;
+
+    @Column(nullable = false)
+    private String grade;
+
+    @MaybeNull
     private int total_students;
+
+    //Relationship with user
+    @OneToMany(mappedBy = "classroom",fetch = FetchType.LAZY)
+    private List<User> users;
+
+    //Relationship with period
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "period_id",nullable = false)
+    @JsonIgnore
+    private Period period;
 }

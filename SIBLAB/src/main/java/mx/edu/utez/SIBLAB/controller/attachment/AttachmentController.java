@@ -30,12 +30,15 @@ public class AttachmentController {
 
     @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse<List<Attachment>>> getAll(){
-        return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
+        List<Attachment> attachments= this.service.getAll().getData();
+        attachments = castToMany(attachments);
+        return new ResponseEntity<>(new CustomResponse<>(attachments,false,200,"Ok"),HttpStatus.OK);
     }
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CustomResponse<Optional<Attachment>>> getById(@PathVariable Long id){
-        return new ResponseEntity<>(this.service.getById(id),HttpStatus.OK);
-    }
+        Optional<Attachment> attachment= this.service.getById(id).getData();
+        attachment = castToOne(attachment);
+        return new ResponseEntity<>(new CustomResponse<>(attachment,false,200,"Ok"),HttpStatus.OK);    }
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse<Attachment>> insert(@RequestBody @Valid Attachment attachment){
         return new ResponseEntity<>(this.service.insert(attachment), HttpStatus.CREATED);
@@ -60,6 +63,26 @@ public class AttachmentController {
         return new ResponseEntity<>(this.service.changeStatus(attachment),HttpStatus.CREATED);
     }
 
+
+    public Optional<Attachment> castToOne(Optional<Attachment> attachment){
+        attachment.get().setReport(
+                attachment.get().getReport().stream().map(
+                        report -> new ReportDto(
+                                report.getId(),
+                                report.getStatus(),
+                                report.getId_teacher(),
+                                report.getTime_Register().toString(),
+                                report.getTime_Finish().toString(),
+                                report.getDefect(),
+                                report.getUser(),
+                                report.getMachine(),
+                                report.getInfo(),
+                                report.getAttachment()
+                        ).castToReportToAttach()
+                ).collect(Collectors.toList())
+        );
+        return attachment;
+    }
     public List<Attachment> castToMany(List<Attachment> attachments){
         attachments = attachments.stream().map(
                 attachment ->
@@ -67,6 +90,8 @@ public class AttachmentController {
                                 attachment.getId(),
                                 attachment.getSpecific_report(),
                                 attachment.getStatus(),
+                                attachment.getName(),
+                                attachment.getGroup(),
                                 attachment.getReport().stream().map(
                                         report -> new ReportDto(
                                                 report.getId(),

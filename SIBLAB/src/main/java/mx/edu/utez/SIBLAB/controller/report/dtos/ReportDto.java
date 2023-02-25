@@ -3,6 +3,7 @@ package mx.edu.utez.SIBLAB.controller.report.dtos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jdk.jfr.Timestamp;
 import lombok.*;
+import mx.edu.utez.SIBLAB.controller.report.dtos.validations.attachment.ValidAttachment;
 import mx.edu.utez.SIBLAB.controller.report.dtos.validations.date.ValidDate;
 import mx.edu.utez.SIBLAB.controller.report.dtos.validations.machine.ValidMachine;
 import mx.edu.utez.SIBLAB.controller.report.dtos.validations.status.ValidStatus;
@@ -12,6 +13,7 @@ import mx.edu.utez.SIBLAB.models.attachment.Attachment;
 import mx.edu.utez.SIBLAB.models.machine.Machine;
 import mx.edu.utez.SIBLAB.models.report.Report;
 import mx.edu.utez.SIBLAB.models.user.User;
+import net.bytebuddy.utility.nullability.MaybeNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
@@ -44,6 +46,7 @@ public class ReportDto {
     @ValidDate(dateFormat = "dd-MM-yyyy HH:mm:ss", message = "Campo inválido")
     private String time_Finish;
 
+    @MaybeNull
     private Boolean defect;
 
     @ValidStudent(message = "Estudiante inválido") //Sacar id y validar en tabla users
@@ -56,7 +59,8 @@ public class ReportDto {
     @Length(min = 10, message = "Escriba un mínimo de 10 caracteres")
     private String info;
 
-    @NotEmpty(message = "Campo requerido")
+    @MaybeNull
+    @ValidAttachment(message = "Reporte docente inválido")
     private Attachment attachment;
 
     static Date register;

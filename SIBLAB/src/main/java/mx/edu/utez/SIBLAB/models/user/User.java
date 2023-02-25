@@ -1,7 +1,11 @@
 package mx.edu.utez.SIBLAB.models.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import mx.edu.utez.SIBLAB.models.classroom.Classroom;
+import mx.edu.utez.SIBLAB.models.machine.Machine;
+import mx.edu.utez.SIBLAB.models.period.Period;
 import mx.edu.utez.SIBLAB.models.report.Report;
 import net.bytebuddy.utility.nullability.MaybeNull;
 
@@ -37,14 +41,11 @@ public class User {
     @Column(nullable = false)
     private Boolean status;
 
-    @MaybeNull
-    private String career;
-
-    @MaybeNull
-    private String division;
-
-    @MaybeNull
-    private String classroom;
+    //relationship with classroom
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_classroom")
+    @JsonIgnore
+    private Classroom classroom;
 
     @Column(unique = true)
     private String code;
@@ -52,4 +53,9 @@ public class User {
     //Relationship with report
     @OneToMany(mappedBy = "user")
     private List<Report> reports;
+
+    //Relationship with period
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Period> periods;
 }

@@ -11,17 +11,13 @@ import mx.edu.utez.SIBLAB.controller.user.dtos.validations.code.ValidCode;
 import mx.edu.utez.SIBLAB.controller.user.dtos.validations.email.ValidEmail;
 import mx.edu.utez.SIBLAB.controller.user.dtos.validations.noNumbers.ValidNoNumbers;
 import mx.edu.utez.SIBLAB.controller.user.dtos.validations.role.ValidRole;
-import mx.edu.utez.SIBLAB.controller.user.dtos.validations.teacher.ValidTeacher;
+import mx.edu.utez.SIBLAB.models.classroom.Classroom;
+import mx.edu.utez.SIBLAB.models.period.Period;
 import mx.edu.utez.SIBLAB.models.report.Report;
 import mx.edu.utez.SIBLAB.models.user.User;
 import net.bytebuddy.utility.nullability.MaybeNull;
 import org.hibernate.validator.constraints.Length;
-
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @AllArgsConstructor
@@ -52,31 +48,42 @@ public class UserDto {
     private String role;
 
     @MaybeNull
-    @ValidNoNumbers(message = "Este campo no acepta valores numéricos")
-    @Length(min = 2, max = 10, message = "EL nombre de la carrera debe ser de entre 2 y 10 caracteres")
-    private String career;
-
-    @MaybeNull
-    @ValidNoNumbers(message = "Este campo no acepta valores numéricos")
-    @Length(min = 4, max = 10, message = "EL nombre de la división debe ser de entre 4 y 10 caracteres")
-    private String division;
-
-    @MaybeNull
     @ValidClassroom(message = "Grupo no encotrado")
-    private String classroom;
+    private Classroom classroom;
 
     @MaybeNull
     @ValidCode(message = "matrícula ya registrada")
     @Length(min = 10,message = "EL código debe ser de 10 caracteres")
     private String code;
 
+    @MaybeNull
     private Boolean status;
+
+    @MaybeNull
+    private List<Period> period;
+
+    @MaybeNull
+    private List<Report> reports;
     public User castToUser(){
-        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),true,getCareer(),getDivision(),getClassroom(),getCode(),null );
+        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),true,getClassroom(),getCode(),null,null );
     }
 
     //Report
     public User castToUserToReport(){
-        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),getStatus(),getCareer(),getDivision(),getClassroom(),getCode(),null);
+        Classroom classroom1 = new Classroom();
+        classroom1.setId(getClassroom().getId());
+        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),getStatus(),classroom1,getCode(),null,null);
+    }
+
+    //Period
+    public User castToUserToPeriod(){
+        Classroom classroom1 = new Classroom();
+        classroom1.setId(getClassroom().getId());
+        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),getStatus(),classroom1,getCode(),null,null);
+    }
+
+    //classroom
+    public User castToUserToClass(){
+        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),getStatus(),null,getCode(),null,null);
     }
 }

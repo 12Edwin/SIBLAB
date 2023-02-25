@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import mx.edu.utez.SIBLAB.models.building.Building;
 import mx.edu.utez.SIBLAB.models.laboratory.Laboratory;
+import net.bytebuddy.utility.nullability.MaybeNull;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -13,10 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 public class BuildingDto {
     private Long id;
-    @NotEmpty
+    @NotEmpty(message = "Campo requerido")
     private String name;
-    @NotEmpty
+    @NotEmpty(message = "Campo requerido")
     private String location;
+    @MaybeNull
     private List<Laboratory> laboratories;
 
     public Building castToBuilding(){
