@@ -1,6 +1,7 @@
 package mx.edu.utez.SIBLAB.controller.period;
 
 import mx.edu.utez.SIBLAB.controller.classroom.dtos.ClassroomDto;
+import mx.edu.utez.SIBLAB.controller.period.dto.PeriodDto;
 import mx.edu.utez.SIBLAB.controller.user.dtos.UserDto;
 import mx.edu.utez.SIBLAB.models.period.Period;
 import mx.edu.utez.SIBLAB.service.period.PeriodService;
@@ -34,13 +35,13 @@ public class PeriodController {
         period = castToOne(period);
         return new ResponseEntity<>(new CustomResponse<>(period,false,200,"Ok"),HttpStatus.OK);    }
     @PostMapping(value = "/", produces = "application/json")
-    public ResponseEntity<CustomResponse<Period>> insert(@RequestBody @Valid Period period){
-        return new ResponseEntity<>(this.service.insert(period), HttpStatus.CREATED);
+    public ResponseEntity<CustomResponse<Period>> insert(@RequestBody @Valid PeriodDto period){
+        return new ResponseEntity<>(this.service.insert(period.castToPeriod()), HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<CustomResponse<Period>> update(@RequestBody @Valid Period period, @PathVariable Long id){
+    public ResponseEntity<CustomResponse<Period>> update(@RequestBody @Valid PeriodDto period, @PathVariable Long id){
         period.setId(id);
-        return new ResponseEntity<>(this.service.update(period),HttpStatus.CREATED );
+        return new ResponseEntity<>(this.service.update(period.castToPeriodToUpdate()),HttpStatus.CREATED );
     }
 
     public Optional<Period> castToOne(Optional<Period> period){

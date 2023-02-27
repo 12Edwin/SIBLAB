@@ -1,5 +1,6 @@
 package mx.edu.utez.SIBLAB.controller.building;
 
+import mx.edu.utez.SIBLAB.controller.building.dto.BuildingDto;
 import mx.edu.utez.SIBLAB.controller.laboratory.dto.LaboratoryDto;
 import mx.edu.utez.SIBLAB.models.building.Building;
 import mx.edu.utez.SIBLAB.service.building.BuildingService;
@@ -31,14 +32,14 @@ public class BuildingController {
         Optional<Building> building = this.service.getById(id).getData();
         building = castToOne(building);
         return new ResponseEntity<>(new CustomResponse<>(building,false,200,"Ok"),HttpStatus.OK);    }
-    @PostMapping(value = "/", produces = "aplication/json")
-    public ResponseEntity<CustomResponse<Building>> insert(@RequestBody Building building){
-        return new ResponseEntity<>(this.service.insert(building),HttpStatus.CREATED);
+    @PostMapping(value = "/", produces = "application/json")
+    public ResponseEntity<CustomResponse<Building>> insert(@RequestBody BuildingDto building){
+        return new ResponseEntity<>(this.service.insert(building.castToBuilding()),HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}",produces = "application/json")
-    public ResponseEntity<CustomResponse<Building>> update(@RequestBody Building building, @PathVariable Long id){
+    public ResponseEntity<CustomResponse<Building>> update(@RequestBody BuildingDto building, @PathVariable Long id){
         building.setId(id);
-        return new ResponseEntity<>(this.service.update(building),HttpStatus.CREATED);
+        return new ResponseEntity<>(this.service.update(building.castToBuildingToUpdate()),HttpStatus.CREATED);
     }
     @DeleteMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CustomResponse<Boolean>> delete(@PathVariable Long id){

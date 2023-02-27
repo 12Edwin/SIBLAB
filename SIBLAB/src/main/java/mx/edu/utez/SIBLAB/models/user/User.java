@@ -42,9 +42,9 @@ public class User {
     private Boolean status;
 
     //relationship with classroom
-    @ManyToOne(fetch = FetchType.LAZY)
+    @MaybeNull
+    @ManyToOne()
     @JoinColumn(name = "id_classroom")
-    @JsonIgnore
     private Classroom classroom;
 
     @Column(unique = true)
@@ -56,6 +56,5 @@ public class User {
 
     //Relationship with period
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Period> periods;
 }

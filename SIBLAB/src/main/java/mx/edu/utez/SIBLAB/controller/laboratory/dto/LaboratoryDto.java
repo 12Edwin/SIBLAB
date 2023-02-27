@@ -38,10 +38,16 @@ public class LaboratoryDto {
     @MaybeNull
     private List<Machine> machines;
 
-    @NotEmpty(message = "Campo requerido")
     @ValidBuilding(message = "Edificio inválido")
     private Building building;
 
+    public Laboratory castToLaboratory(){
+        return new Laboratory(null,getName(),getDescription(),true,null,getBuilding());
+    }
+
+    public Laboratory castToLaboratoryToUpdate(){
+        return new Laboratory(getId(),getName(),getDescription(),getStatus(),null,getBuilding());
+    }
 
     //Building
     public Laboratory castToLaboratoryToBuild(){

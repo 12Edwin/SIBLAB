@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface MachineRepository extends JpaRepository<Machine,Long> {
     @Modifying
     @Query(value = "UPDATE machines SET status = :status WHERE id = :id",nativeQuery = true)
-    boolean changeStatusById(@Param("id")Long id, @Param("status")Boolean status);
+    int changeStatusById(@Param("id")Long id, @Param("status")Boolean status);
 
     @Modifying
     @Query(value = "UPDATE machines SET path_image = :path_image WHERE id = :id", nativeQuery = true)

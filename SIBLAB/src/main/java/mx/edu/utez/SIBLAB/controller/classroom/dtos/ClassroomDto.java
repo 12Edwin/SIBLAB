@@ -36,6 +36,7 @@ public class ClassroomDto {
     @NotEmpty(message = "Campo requerido")
     private String grade;
 
+    @MaybeNull
     private List<User> users;
 
     @ValidPeriod(message = "Periodo inválido")
@@ -43,6 +44,9 @@ public class ClassroomDto {
     private Period period;
 
     public Classroom castToClassroom (){
+        return new Classroom(null,getName(),getCareer(),getGrade(),getTotal_students(),null,getPeriod());
+    }
+    public Classroom castToClassroomToUpdate (){
         return new Classroom(getId(),getName(),getCareer(),getGrade(),getTotal_students(),null,getPeriod());
     }
 

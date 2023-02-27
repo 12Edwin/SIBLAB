@@ -42,6 +42,5 @@ public class Laboratory {
     //Relationship with building
     @ManyToOne
     @JoinColumn(name = "id_building")
-    @JsonIgnore
     private Building building;
 }

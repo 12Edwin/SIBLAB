@@ -65,7 +65,10 @@ public class UserDto {
     @MaybeNull
     private List<Report> reports;
     public User castToUser(){
-        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),true,getClassroom(),getCode(),null,null );
+        return new User(null,getName(),getSurname(),getEmail(),getPassword(),getRole(),true,getClassroom(),getCode(),null,null );
+    }
+    public User castToUserToUpdate(){
+        return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),getStatus(),getClassroom(),getCode(),null,null );
     }
 
     //Report

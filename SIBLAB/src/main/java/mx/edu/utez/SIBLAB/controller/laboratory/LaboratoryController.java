@@ -1,6 +1,7 @@
 package mx.edu.utez.SIBLAB.controller.laboratory;
 
 import mx.edu.utez.SIBLAB.controller.building.dto.BuildingDto;
+import mx.edu.utez.SIBLAB.controller.laboratory.dto.LaboratoryDto;
 import mx.edu.utez.SIBLAB.controller.machine.dtos.MachineDto;
 import mx.edu.utez.SIBLAB.models.laboratory.Laboratory;
 import mx.edu.utez.SIBLAB.service.laboratory.LaboratoryService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,14 +38,14 @@ public class LaboratoryController {
         return new ResponseEntity<>(new CustomResponse<>(laboratory,false,200,"Ok"),HttpStatus.OK);    }
 
     @PostMapping(value = "/", produces = "application/json")
-    public ResponseEntity<CustomResponse<Laboratory>> insert(@RequestBody Laboratory laboratory){
-        return new ResponseEntity<>(this.service.insert(laboratory), HttpStatus.CREATED );
+    public ResponseEntity<CustomResponse<Laboratory>> insert(@RequestBody @Valid LaboratoryDto laboratory){
+        return new ResponseEntity<>(this.service.insert(laboratory.castToLaboratory()), HttpStatus.CREATED );
     }
 
     @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<CustomResponse<Laboratory>> update(@PathVariable Long id, @RequestBody Laboratory laboratory){
+    public ResponseEntity<CustomResponse<Laboratory>> update(@PathVariable Long id, @RequestBody LaboratoryDto laboratory){
         laboratory.setId(id);
-        return new ResponseEntity<>(this.service.update(laboratory),HttpStatus.CREATED );
+        return new ResponseEntity<>(this.service.update(laboratory.castToLaboratoryToUpdate()),HttpStatus.CREATED );
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
@@ -56,6 +58,7 @@ public class LaboratoryController {
         laboratory.get().setMachines(laboratory.get().getMachines().stream().map(
                 machine -> new MachineDto(
                         machine.getId(),
+                        machine.getName(),
                         machine.getBrand(),
                         machine.getPath_image(),
                         machine.getCpu(),
@@ -78,7 +81,8 @@ public class LaboratoryController {
     }
     public List<Laboratory> castToMany(List<Laboratory> laboratories){
         laboratories = laboratories.stream().map(
-                laboratory -> new Laboratory(
+                laboratory ->
+                        new Laboratory(
                         laboratory.getId(),
                         laboratory.getName(),
                         laboratory.getDescription(),
@@ -86,6 +90,7 @@ public class LaboratoryController {
                         laboratory.getMachines().stream().map(
                                 machine -> new MachineDto(
                                         machine.getId(),
+                                        machine.getName(),
                                         machine.getBrand(),
                                         machine.getPath_image(),
                                         machine.getHard_disk(),

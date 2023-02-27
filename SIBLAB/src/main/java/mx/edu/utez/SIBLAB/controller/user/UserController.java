@@ -47,8 +47,8 @@ public class UserController {
         return new ResponseEntity<>(new CustomResponse<>(results,false,200,"Ok"),HttpStatus.OK);
     }
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<String>> changeStatus(@PathVariable Long id, @RequestParam(name = "status") Boolean status){
-        return new ResponseEntity<>(this.service.changeStatus(id,status),HttpStatus.CREATED);
+    public @ResponseBody ResponseEntity<CustomResponse<String>> changeStatus(@PathVariable Long id){
+        return new ResponseEntity<>(this.service.changeStatus(id,!this.service.getById(id).getData().get().getStatus()),HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/",produces = "application/json")
@@ -59,7 +59,7 @@ public class UserController {
     @PutMapping(value = "/{id}",produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<User>> update(@Valid @RequestBody UserDto user, @PathVariable Long id){
         user.setId(id);
-        return new ResponseEntity<>(this.service.update(user.castToUser()),HttpStatus.OK);
+        return new ResponseEntity<>(this.service.update(user.castToUserToUpdate()),HttpStatus.OK);
     }
 
     public Optional<User> castOne(Optional<User> result){

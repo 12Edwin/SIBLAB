@@ -41,7 +41,6 @@ public class Classroom {
 
     //Relationship with period
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "period_id",nullable = false)
-    @JsonIgnore
+    @JoinColumn(name = "period_id")
     private Period period;
 }

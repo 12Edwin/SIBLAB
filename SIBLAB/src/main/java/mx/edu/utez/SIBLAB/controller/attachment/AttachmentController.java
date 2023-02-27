@@ -1,5 +1,6 @@
 package mx.edu.utez.SIBLAB.controller.attachment;
 
+import mx.edu.utez.SIBLAB.controller.attachment.dto.AttachmentDto;
 import mx.edu.utez.SIBLAB.controller.report.dtos.ReportDto;
 import mx.edu.utez.SIBLAB.models.attachment.Attachment;
 import mx.edu.utez.SIBLAB.models.status.Status;
@@ -40,13 +41,13 @@ public class AttachmentController {
         attachment = castToOne(attachment);
         return new ResponseEntity<>(new CustomResponse<>(attachment,false,200,"Ok"),HttpStatus.OK);    }
     @PostMapping(value = "/", produces = "application/json")
-    public ResponseEntity<CustomResponse<Attachment>> insert(@RequestBody @Valid Attachment attachment){
-        return new ResponseEntity<>(this.service.insert(attachment), HttpStatus.CREATED);
+    public ResponseEntity<CustomResponse<Attachment>> insert(@RequestBody @Valid AttachmentDto attachment){
+        return new ResponseEntity<>(this.service.insert(attachment.castToAttachment()), HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<CustomResponse<Attachment>> update(@RequestBody @Valid Attachment attachment, @PathVariable Long id){
+    public ResponseEntity<CustomResponse<Attachment>> update(@RequestBody @Valid AttachmentDto attachment, @PathVariable Long id){
         attachment.setId(id);
-        return new ResponseEntity<>(this.service.update(attachment),HttpStatus.CREATED );
+        return new ResponseEntity<>(this.service.update(attachment.castToAttachmentToUpdate()),HttpStatus.CREATED );
     }
     @PatchMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<?> changeStatus(@PathVariable Long id,@RequestBody @Valid Attachment attachment){
@@ -89,6 +90,7 @@ public class AttachmentController {
                         new Attachment(
                                 attachment.getId(),
                                 attachment.getSpecific_report(),
+                                attachment.getCreate_at(),
                                 attachment.getStatus(),
                                 attachment.getName(),
                                 attachment.getGroup(),
@@ -106,6 +108,7 @@ public class AttachmentController {
                                                 report.getAttachment()
                                         ).castToReportToAttach()
                                 ).collect(Collectors.toList())
+
                         )).collect(Collectors.toList());
         return attachments;
     }

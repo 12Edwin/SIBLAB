@@ -35,7 +35,7 @@ public class RoleController {
     @PutMapping(value = "/{id}",produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Role>> update(@PathVariable Long id, @RequestBody @Valid RoleDto role){
         role.setId(id);
-        return new ResponseEntity<>(this.service.update(role.castToRole()),HttpStatus.CREATED);
+        return new ResponseEntity<>(this.service.update(role.castToRoleToUpdate()),HttpStatus.CREATED);
     }
     @DeleteMapping(value = "/{id}",produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Boolean>> delete(@PathVariable Long id){

@@ -61,7 +61,7 @@ public class ReportController {
         return new ResponseEntity<>(this.service.insert(report.castToReport()),HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<Boolean>> update(@RequestBody @Valid Report report, @PathVariable Long id){
+    public @ResponseBody ResponseEntity<CustomResponse<Boolean>> update(@RequestBody @Valid ReportDto report, @PathVariable Long id){
         return new ResponseEntity<>(this.service.changeStatus(id, report.getStatus()),HttpStatus.CREATED);
     }
 
@@ -69,6 +69,7 @@ public class ReportController {
         result.get().setMachine(
                 new MachineDto(
                         result.get().getMachine().getId(),
+                        result.get().getMachine().getName(),
                         result.get().getMachine().getBrand(),
                         result.get().getMachine().getPath_image(),
                         result.get().getMachine().getHard_disk(),
@@ -120,6 +121,7 @@ public class ReportController {
                         ).castToUserToReport(),
                         new MachineDto(
                                 report.getMachine().getId(),
+                                report.getMachine().getName(),
                                 report.getMachine().getBrand(),
                                 report.getMachine().getPath_image(),
                                 report.getMachine().getHard_disk(),

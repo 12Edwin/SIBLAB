@@ -35,7 +35,7 @@ public class StatusController {
     @PutMapping(value = "/{id}",produces = "application/json")
     public ResponseEntity<CustomResponse<Status>> update(@RequestBody @Valid StatusDto status, @PathVariable Long id){
         status.setId(id);
-        return new ResponseEntity<>(this.service.updateStatus(status.castToStatus()),HttpStatus.CREATED);
+        return new ResponseEntity<>(this.service.updateStatus(status.castToStatusToUpdate()),HttpStatus.CREATED);
     }
     @DeleteMapping(value = "/{id}",produces = "application/json")
     public ResponseEntity<CustomResponse<Boolean>> delete(@PathVariable Long id){

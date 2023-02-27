@@ -19,7 +19,7 @@ public class BuildingValidator implements ConstraintValidator<ValidBuilding,Buil
     @Override
     public boolean isValid(Building value, ConstraintValidatorContext constraintContext){
         if (value == null){
-            return true;
+            return false;
         }
         return this.repository.existsById(value.getId());
     }

@@ -33,17 +33,21 @@ public class MachineController {
         return new ResponseEntity<>(new CustomResponse<>(results,false,200,"Ok"), HttpStatus.OK);
     }
     @PostMapping(value = "/", produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<Machine>> insert(@RequestBody Machine machine){
-        return new ResponseEntity<>(this.service.insert(machine),HttpStatus.CREATED);
+    public @ResponseBody ResponseEntity<CustomResponse<Machine>> insert(@RequestBody @Valid MachineDto machine){
+        return new ResponseEntity<>(this.service.insert(machine.castToMachine()),HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}",produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<Machine>> update(@PathVariable Long id,@RequestBody @Valid MachineDto machine){
+    public @ResponseBody ResponseEntity<CustomResponse<?>> update(@PathVariable Long id,@RequestBody @Valid MachineDto machine){
         machine.setId(id);
-        return new ResponseEntity<>(this.service.update(machine.castToMachineUpdate()),HttpStatus.CREATED);
+        Optional<Machine> result = Optional.ofNullable(this.service.update(machine.castToMachineToUpdate()).getData());
+        result = castOne(result);
+        return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.CREATED);
     }
     @DeleteMapping(value = "/{id}",produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<Boolean>> changeStatus(@PathVariable Long id, @RequestBody @Valid MachineDto machine){
-        return new ResponseEntity<>(this.service.changeStatus(id,machine.castToMachineDelete().getStatus()),HttpStatus.CREATED);
+    public @ResponseBody ResponseEntity<CustomResponse<Boolean>> changeStatus(@PathVariable Long id){
+        boolean status = this.service.getById(id).getData().get().getStatus();
+        status = !status;
+        return new ResponseEntity<>(this.service.changeStatus(id,status),HttpStatus.CREATED);
     }
 
     public Optional<Machine> castOne(Optional<Machine> result){
@@ -62,14 +66,16 @@ public class MachineController {
     }
     public List<Machine> castMany(List<Machine> results){
         return results.stream()
-                .map(machine -> new MachineDto(
+                .map(machine -> new Machine(
                         machine.getId(),
+                        machine.getName(),
                         machine.getBrand(),
                         machine.getPath_image(),
                         machine.getCpu(),
                         machine.getHard_disk(),
                         machine.getStatus(),
                         machine.getSpecific_features(),
+                        null,
                         new LaboratoryDto(
                                 machine.getLaboratory().getId(),
                                 machine.getLaboratory().getName(),
@@ -77,8 +83,7 @@ public class MachineController {
                                 machine.getLaboratory().getStatus(),
                                 machine.getLaboratory().getMachines(),
                                 machine.getLaboratory().getBuilding()
-                        ).castToLaboratoryToMachine(),
-                        null
-                ).castToMachine()).collect(Collectors.toList());
+                        ).castToLaboratoryToMachine()
+                )).collect(Collectors.toList());
     }
 }

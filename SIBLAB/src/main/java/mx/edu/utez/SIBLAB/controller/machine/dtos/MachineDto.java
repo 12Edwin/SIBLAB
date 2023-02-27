@@ -1,6 +1,5 @@
 package mx.edu.utez.SIBLAB.controller.machine.dtos;
 
-import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +23,9 @@ import java.util.List;
 public class MachineDto {
     private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
     @NotBlank(message = "Campo requerido")
     private String brand;
 
@@ -43,31 +45,27 @@ public class MachineDto {
     @Length(min = 5, message = "Mínimo 5 caractéres")
     private String specific_features;
 
-    @NotEmpty(message = "Campo requerido")
     @ValidLaboratory(message = "Laboratorio inválido")
     private Laboratory id_laboratory;
 
     private List<Report> report;
 
     public Machine castToMachine(){
-        return new Machine(null,getBrand(),getPath_image(),getHard_disk(),getCpu(),true,getSpecific_features(),null,getId_laboratory());
+        return new Machine(null,getName(),getBrand(),getPath_image(),getHard_disk(),getCpu(),true,getSpecific_features(),null,getId_laboratory());
     }
-    public Machine castToMachineUpdate(){
-        return new Machine(null,getBrand(),getPath_image(),getHard_disk(),getCpu(),getStatus(),getSpecific_features(),null,getId_laboratory());
-    }
-    public Machine castToMachineDelete(){
-        return new Machine(null,null,null,null,null,getStatus(),null,null,null);
+    public Machine castToMachineToUpdate(){
+        return new Machine(getId(),getName(),getBrand(),getPath_image(),getHard_disk(),getCpu(),true,getSpecific_features(),null,getId_laboratory());
     }
 
     //Report
     public Machine castToMachineToReport(){
         Laboratory lab = new Laboratory();
         lab.setId(getId_laboratory().getId());
-        return new Machine(getId(),getBrand(),getPath_image(),getHard_disk(),getCpu(),getStatus(),getSpecific_features(),null, lab);
+        return new Machine(getId(),getName(),getBrand(),getPath_image(),getHard_disk(),getCpu(),getStatus(),getSpecific_features(),null, lab);
     }
     //Laboratory
     public Machine castToMachineToLab(){
-        return new Machine(getId(),getBrand(),getPath_image(),getHard_disk(),getCpu(),getStatus(),getSpecific_features(),null,null);
+        return new Machine(getId(),getName(),getBrand(),getPath_image(),getHard_disk(),getCpu(),getStatus(),getSpecific_features(),null,null);
     }
 
     //Machine

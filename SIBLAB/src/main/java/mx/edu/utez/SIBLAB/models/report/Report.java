@@ -55,6 +55,5 @@ public class Report {
     //Relationship with attachment
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attachment_id",nullable = false)
-    @JsonIgnore
     private Attachment attachment;
 }

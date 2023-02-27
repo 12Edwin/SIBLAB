@@ -67,7 +67,7 @@ public class ReportDto {
     static Date finish;
     public Report castToReport(){
         date();
-        return new Report(getId(),"Pending_student",getId_teacher(),register,finish,getInfo(),null,getStudent(),getMachine(),getAttachment());
+        return new Report(null,"Pending_student",getId_teacher(),register,finish,getInfo(),null,getStudent(),getMachine(),getAttachment());
     }
 
     //Machine

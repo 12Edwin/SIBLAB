@@ -20,6 +20,9 @@ public class StatusDto {
     @NotEmpty(message = "Campo requerido")
     private String description;
     public Status castToStatus(){
+        return new Status(null,getName(),getDescription());
+    }
+    public Status castToStatusToUpdate(){
         return new Status(getId(),getName(),getDescription());
     }
 }

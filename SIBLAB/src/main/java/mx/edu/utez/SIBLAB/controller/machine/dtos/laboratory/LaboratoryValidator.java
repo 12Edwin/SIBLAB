@@ -21,7 +21,7 @@ public class LaboratoryValidator implements ConstraintValidator<ValidLaboratory,
     @Override
     public boolean isValid(Laboratory value, ConstraintValidatorContext constraintContext){
         if (value == null){
-            return true;
+            return false;
         }
         return this.repository.existsById(value.getId());
     }

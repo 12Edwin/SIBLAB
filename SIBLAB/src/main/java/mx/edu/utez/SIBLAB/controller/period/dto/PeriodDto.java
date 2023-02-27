@@ -1,20 +1,15 @@
 package mx.edu.utez.SIBLAB.controller.period.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mx.edu.utez.SIBLAB.controller.period.dto.validations.date.ValidDate;
 import mx.edu.utez.SIBLAB.controller.period.dto.validations.student.ValidUser;
 import mx.edu.utez.SIBLAB.models.classroom.Classroom;
 import mx.edu.utez.SIBLAB.models.period.Period;
 import mx.edu.utez.SIBLAB.models.user.User;
 import net.bytebuddy.utility.nullability.MaybeNull;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,13 +28,12 @@ public class PeriodDto {
     @NotEmpty(message = "Campo requerido")
     private String semester;
 
-    @NotEmpty(message = "Campo requerido")
+    @ValidDate(message = "Fecha inválida", dateFormat = "dd-MM-yyyy")
     private String start_semester;
 
-    @NotEmpty(message = "Campo requerido")
+    @ValidDate(message = "Fecha inválida", dateFormat = "dd-MM-yyyy")
     private String finish_semester;
 
-    @NotEmpty(message = "Campo requerido")
     @ValidUser(message = "Profesor inválido")
     private User user_id;
 
@@ -50,7 +44,11 @@ public class PeriodDto {
 
     public Period castToPeriod(){
         date();
-        return new Period(getId(),getSemester(),start,finish,getUser_id(),getClassrooms());
+        return new Period(null,getSemester(),start,finish,getUser_id(),null);
+    }
+    public Period castToPeriodToUpdate(){
+        date();
+        return new Period(getId(),getSemester(),start,finish,getUser_id(),null);
     }
 
     //user

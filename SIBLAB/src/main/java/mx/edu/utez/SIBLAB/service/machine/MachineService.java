@@ -35,7 +35,7 @@ public class MachineService {
     }
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Boolean> changeStatus(Long id, Boolean status){
-        return new CustomResponse<>(this.repository.changeStatusById(id,status),false,200,"Changed");
+        return new CustomResponse<>(this.repository.changeStatusById(id,status) == 1,false,200,"Changed");
     }
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Boolean> patch(Machine machine){

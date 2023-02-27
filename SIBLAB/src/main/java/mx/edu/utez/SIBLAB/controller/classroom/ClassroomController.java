@@ -41,7 +41,7 @@ public class ClassroomController {
     @PutMapping(value = "/{id}",produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Classroom>> update(@PathVariable Long id, @RequestBody @Valid ClassroomDto classroom){
         classroom.setId(id);
-        return new ResponseEntity<>(this.service.update(classroom.castToClassroom()),HttpStatus.CREATED );
+        return new ResponseEntity<>(this.service.update(classroom.castToClassroomToUpdate()),HttpStatus.CREATED );
     }
     @DeleteMapping(value = "/{id}",produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Boolean>> changeStatus(@PathVariable Long id){

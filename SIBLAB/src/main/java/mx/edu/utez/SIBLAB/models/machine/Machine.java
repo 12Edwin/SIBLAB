@@ -25,6 +25,9 @@ public class Machine {
     private Long id;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String brand;
 
     @MaybeNull
@@ -49,6 +52,5 @@ public class Machine {
     //Relationship with laboratory
     @ManyToOne
     @JoinColumn(name = "id_laboratory", nullable = false)
-    @JsonIgnore
     private Laboratory laboratory;
 }

@@ -1,19 +1,20 @@
 package mx.edu.utez.SIBLAB.controller.attachment.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.SIBLAB.controller.attachment.dto.validations.classroom.ValidClassroom;
 import mx.edu.utez.SIBLAB.controller.attachment.dto.validations.status.ValidStatus;
+import mx.edu.utez.SIBLAB.controller.report.dtos.validations.date.ValidDate;
 import mx.edu.utez.SIBLAB.models.attachment.Attachment;
 import mx.edu.utez.SIBLAB.models.report.Report;
 import net.bytebuddy.utility.nullability.MaybeNull;
-
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 @Getter
 @Setter
@@ -40,9 +41,33 @@ public class AttachmentDto {
     @MaybeNull
     private List<Report> report;
 
+    @ValidDate(message = "Fecha inválida", dateFormat = "dd-MM-yyyy HH:mm:ss")
+    private String create_at;
 
+    private static Date register;
+
+    public Attachment castToAttachment(){
+        date();
+        return new Attachment(null,getSpecific_report(),register,getStatus(),getName(),getGroup(),null);
+    }
+    public Attachment castToAttachmentToUpdate(){
+        date();
+        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getGroup(),null);
+    }
     //report
     public Attachment castToAttachToReport(){
-        return new Attachment(getId(),getSpecific_report(),getStatus(),getName(),getGroup(),null);
+        date();
+        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getGroup(),null);
+    }
+
+    public void date(){
+        DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        sdf.setLenient(false);
+
+        try {
+            register = sdf.parse(getCreate_at());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

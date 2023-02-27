@@ -22,6 +22,10 @@ public class BuildingDto {
     private List<Laboratory> laboratories;
 
     public Building castToBuilding(){
+        return new Building(null,getName(),getLocation(),null);
+    }
+
+    public Building castToBuildingToUpdate(){
         return new Building(getId(),getName(),getLocation(),null);
     }
 

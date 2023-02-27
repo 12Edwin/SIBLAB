@@ -2,13 +2,11 @@ package mx.edu.utez.SIBLAB.models.attachment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import mx.edu.utez.SIBLAB.models.report.Report;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,6 +24,9 @@ public class Attachment {
     private String specific_report;
 
     @Column(nullable = false)
+    private Date create_at;
+
+    @Column(nullable = false)
     private String status;
 
     @Column(nullable = false)
@@ -36,6 +37,5 @@ public class Attachment {
 
     //Relationship with report
     @OneToMany(mappedBy = "attachment")
-    @JsonIgnore
     private List<Report> report;
 }

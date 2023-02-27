@@ -35,11 +35,9 @@ public class Period {
     //Relationship with user
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user",nullable = false)
-    @JsonIgnore
     private User user;
 
     //RelationShip with classroom
     @OneToMany(mappedBy = "period",fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Classroom> classrooms;
 }

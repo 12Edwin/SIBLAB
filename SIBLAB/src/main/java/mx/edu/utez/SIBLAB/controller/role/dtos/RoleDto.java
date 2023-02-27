@@ -21,6 +21,9 @@ public class RoleDto {
     private String description;
 
     public Role castToRole(){
+        return new Role(null,getName(),getDescription());
+    }
+    public Role castToRoleToUpdate(){
         return new Role(getId(),getName(),getDescription());
     }
 }
