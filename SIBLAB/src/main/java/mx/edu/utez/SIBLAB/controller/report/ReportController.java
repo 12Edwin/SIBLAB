@@ -35,7 +35,8 @@ public class ReportController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Optional<Report>>> getById(@PathVariable Long id){
         Optional<Report> results = this.service.getById(id).getData();
-        results = castOne(results);
+        if (results != null)
+            results = castOne(results);
         return new ResponseEntity<>(new CustomResponse<>(results,false,200,"Ok"),HttpStatus.OK);
     }
     @GetMapping(value = "/student/{id_student}", produces = "application/json")
@@ -134,7 +135,7 @@ public class ReportController {
                         report.getInfo(),
                         report.getAttachment()
 
-                ).castToReport()).collect(Collectors.toList());
+                ).castToReportToGet()).collect(Collectors.toList());
     }
 
 }

@@ -59,7 +59,9 @@ public class PeriodDto {
     //classroom
     public Period castToPeriodToClass(){
         User user1= new User();
-        user1.setId(getUser_id().getId());
+        if (getUser_id() != null) {
+            user1.setId(getUser_id().getId());
+        }
         date();
         return new Period(getId(),getSemester(),start,finish,user1,null);
     }

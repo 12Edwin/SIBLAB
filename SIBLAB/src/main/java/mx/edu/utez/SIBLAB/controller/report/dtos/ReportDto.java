@@ -1,7 +1,5 @@
 package mx.edu.utez.SIBLAB.controller.report.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jdk.jfr.Timestamp;
 import lombok.*;
 import mx.edu.utez.SIBLAB.controller.report.dtos.validations.attachment.ValidAttachment;
 import mx.edu.utez.SIBLAB.controller.report.dtos.validations.date.ValidDate;
@@ -15,12 +13,8 @@ import mx.edu.utez.SIBLAB.models.report.Report;
 import mx.edu.utez.SIBLAB.models.user.User;
 import net.bytebuddy.utility.nullability.MaybeNull;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,10 +34,10 @@ public class ReportDto {
     @ValidTeacher(message = "Profesor no válido")
     private Long id_teacher;
 
-    @ValidDate(dateFormat = "dd-MM-yyyy HH:mm:ss",message = "Campo inválido")
+    @ValidDate(dateFormat = "yyyy-MM-dd HH:mm:ss",message = "Campo inválido")
     private String time_Register;
 
-    @ValidDate(dateFormat = "dd-MM-yyyy HH:mm:ss", message = "Campo inválido")
+    @ValidDate(dateFormat = "yyyy-MM-dd HH:mm:ss", message = "Campo inválido")
     private String time_Finish;
 
     @MaybeNull
@@ -67,7 +61,11 @@ public class ReportDto {
     static Date finish;
     public Report castToReport(){
         date();
-        return new Report(null,"Pending_student",getId_teacher(),register,finish,getInfo(),null,getStudent(),getMachine(),getAttachment());
+        return new Report(null,"Pending_student",getId_teacher(),register,finish,getInfo(),getDefect(),getStudent(),getMachine(),getAttachment());
+    }
+    public Report castToReportToGet(){
+        date();
+        return new Report(getId(),getStatus(),getId_teacher(),register,finish,getInfo(),getDefect(),getStudent(),getMachine(),getAttachment());
     }
 
     //Machine
@@ -78,24 +76,32 @@ public class ReportDto {
     //User
     public Report castToReportToUser(){
         Machine machine1 = new Machine();
-        machine1.setId(getMachine().getId());
+        if (getMachine() != null) {
+            machine1.setId(getMachine().getId());
+        }
         Attachment attachment1 = new Attachment();
-        attachment1.setId(getAttachment().getId());
+        if (getAttachment() != null) {
+            attachment1.setId(getAttachment().getId());
+        }
         date();
         return new Report(getId(),getStatus(),getId_teacher(),register,finish,getInfo(),getDefect(),null,machine1,attachment1);
     }
     //Attachment
     public Report castToReportToAttach(){
         User user = new User();
-        user.setId(getStudent().getId());
+        if (getStudent() != null) {
+            user.setId(getStudent().getId());
+        }
         Machine machine1 = new Machine();
-        machine1.setId(getMachine().getId());
+        if (getMachine() != null) {
+            machine1.setId(getMachine().getId());
+        }
         date();
         return new Report(getId(),getStatus(),getId_teacher(),register,finish,getInfo(),getDefect(),user,machine1,null);
     }
 
     public void date(){
-        DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setLenient(false);
 
         try {

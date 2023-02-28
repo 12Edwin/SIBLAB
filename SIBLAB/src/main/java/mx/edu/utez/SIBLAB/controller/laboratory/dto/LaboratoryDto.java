@@ -56,7 +56,8 @@ public class LaboratoryDto {
     //Machine
     public Laboratory castToLaboratoryToMachine(){
         Building building1 = new Building();
-        building1.setId(getBuilding().getId());
+        if (getBuilding() != null)
+            building1.setId(getBuilding().getId());
         return new Laboratory(getId(),getName(),getDescription(), getStatus(),null,building1);
     }
 }

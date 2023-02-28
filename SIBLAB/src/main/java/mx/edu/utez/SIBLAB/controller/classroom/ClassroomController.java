@@ -32,16 +32,20 @@ public class ClassroomController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Optional<Classroom>>> getById(@PathVariable Long id){
         Optional<Classroom> classroom = this.service.getById(id).getData();
-        classroom = castToOne(classroom);
+        if (classroom != null)
+            classroom = castToOne(classroom);
         return new ResponseEntity<>(new CustomResponse<>(classroom,false,200,"Ok"),HttpStatus.OK);    }
     @PostMapping(value = "/", produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Classroom>> insert(@RequestBody @Valid ClassroomDto classroom){
         return new ResponseEntity<>(this.service.insert(classroom.castToClassroom()),HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}",produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<Classroom>> update(@PathVariable Long id, @RequestBody @Valid ClassroomDto classroom){
+    public @ResponseBody ResponseEntity<CustomResponse<Optional<Classroom>>> update(@PathVariable Long id, @RequestBody @Valid ClassroomDto classroom){
         classroom.setId(id);
-        return new ResponseEntity<>(this.service.update(classroom.castToClassroomToUpdate()),HttpStatus.CREATED );
+        Optional<Classroom> result = Optional.ofNullable(this.service.update(classroom.castToClassroomToUpdate()).getData());
+        if (result != null)
+            result = castToOne(result);
+        return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.CREATED );
     }
     @DeleteMapping(value = "/{id}",produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Boolean>> changeStatus(@PathVariable Long id){
@@ -49,30 +53,38 @@ public class ClassroomController {
     }
 
     public Optional<Classroom> castToOne(Optional<Classroom> classroom){
-        classroom.get().setUsers(classroom.get().getUsers().stream().map(
-                user -> new UserDto(
-                        user.getId(),
-                        user.getName(),
-                        user.getSurname(),
-                        user.getEmail(),
-                        user.getPassword(),
-                        user.getRole(),
-                        user.getClassroom(),
-                        user.getCode(),
-                        user.getStatus(),
-                        user.getPeriods(),
-                        user.getReports()
-                ).castToUserToClass()
-        ).collect(Collectors.toList()));
+        if (classroom.get().getUsers() != null) {
+            classroom.get().setUsers(classroom.get().getUsers().stream().map(
+                    user -> new UserDto(
+                            user.getId(),
+                            user.getName(),
+                            user.getSurname(),
+                            user.getEmail(),
+                            user.getPassword(),
+                            user.getRole(),
+                            user.getClassroom(),
+                            user.getCode(),
+                            user.getStatus(),
+                            user.getPeriods(),
+                            user.getReports()
+                    ).castToUserToClass()
+            ).collect(Collectors.toList()));
+        }
+        if (classroom.get().getPeriod() != null) {
+            classroom.get().setPeriod(new PeriodDto(
+                    classroom.get().getPeriod().getId(),
+                    classroom.get().getPeriod().getSemester(),
+                    classroom.get().getPeriod().getStart_semester().toString().split(" ")[0].split("-")[2] + "-" +
+                            classroom.get().getPeriod().getStart_semester().toString().split(" ")[0].split("-")[1] + "-" +
+                            classroom.get().getPeriod().getStart_semester().toString().split(" ")[0].split("-")[0],
 
-        classroom.get().setPeriod(new PeriodDto(
-                classroom.get().getPeriod().getId(),
-                classroom.get().getPeriod().getSemester(),
-                classroom.get().getPeriod().getStart_semester().toString(),
-                classroom.get().getPeriod().getFinish_semester().toString(),
-                classroom.get().getPeriod().getUser(),
-                classroom.get().getPeriod().getClassrooms()
-        ).castToPeriodToClass());
+                    classroom.get().getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[2] + "-" +
+                            classroom.get().getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[1] + "-" +
+                            classroom.get().getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[0],
+                    classroom.get().getPeriod().getUser(),
+                    classroom.get().getPeriod().getClassrooms()
+            ).castToPeriodToClass());
+        }
         return classroom;
     }
     public List<Classroom> castToMany(List<Classroom>classrooms){
@@ -101,8 +113,13 @@ public class ClassroomController {
                         new PeriodDto(
                                 classroom.getPeriod().getId(),
                                 classroom.getPeriod().getSemester(),
-                                classroom.getPeriod().getStart_semester().toString(),
-                                classroom.getPeriod().getFinish_semester().toString(),
+                                classroom.getPeriod().getStart_semester().toString().split(" ")[0].split("-")[2]+"-"+
+                                        classroom.getPeriod().getStart_semester().toString().split(" ")[0].split("-")[1]+"-"+
+                                        classroom.getPeriod().getStart_semester().toString().split(" ")[0].split("-")[0],
+
+                                classroom.getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[2]+"-"+
+                                        classroom.getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[1]+"-"+
+                                        classroom.getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[0],
                                 classroom.getPeriod().getUser(),
                                 classroom.getPeriod().getClassrooms()
                         ).castToPeriodToClass()

@@ -36,7 +36,6 @@ public class UserDto {
     private String surname;
 
     @NotEmpty(message = "El correo es obligatorio")
-    @ValidEmail(message = "Correo inválido")
     private String email;
 
     @NotEmpty(message = "Este campo es obligatorio")
@@ -74,14 +73,18 @@ public class UserDto {
     //Report
     public User castToUserToReport(){
         Classroom classroom1 = new Classroom();
-        classroom1.setId(getClassroom().getId());
+        if (getClassroom() != null) {
+            classroom1.setId(getClassroom().getId());
+        }
         return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),getStatus(),classroom1,getCode(),null,null);
     }
 
     //Period
     public User castToUserToPeriod(){
         Classroom classroom1 = new Classroom();
-        classroom1.setId(getClassroom().getId());
+        if (getClassroom() != null) {
+            classroom1.setId(getClassroom().getId());
+        }
         return new User(getId(),getName(),getSurname(),getEmail(),getPassword(),getRole(),getStatus(),classroom1,getCode(),null,null);
     }
 

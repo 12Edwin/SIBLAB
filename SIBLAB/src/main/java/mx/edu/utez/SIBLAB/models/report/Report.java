@@ -1,14 +1,10 @@
 package mx.edu.utez.SIBLAB.models.report;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.jfr.Timestamp;
 import lombok.*;
 import mx.edu.utez.SIBLAB.models.attachment.Attachment;
 import mx.edu.utez.SIBLAB.models.machine.Machine;
 import mx.edu.utez.SIBLAB.models.user.User;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import net.bytebuddy.utility.nullability.MaybeNull;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -54,6 +50,6 @@ public class Report {
 
     //Relationship with attachment
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "attachment_id",nullable = false)
+    @JoinColumn(name = "attachment_id")
     private Attachment attachment;
 }

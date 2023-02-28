@@ -23,7 +23,9 @@ public class ReportService {
     }
     @Transactional(readOnly = true)
     public CustomResponse<Optional<Report>> getById(Long id){
-        return new CustomResponse<>(this.repository.findById(id),false,200,"Ok");
+        if (this.repository.existsById(id))
+            return new CustomResponse<>(this.repository.findById(id),false,200,"Ok");
+        return new CustomResponse<>(null,true,400,"Reporte no encontrado");
     }
     @Transactional(readOnly = true)
     public CustomResponse<List<Report>> getAllByStudent(Long id){
@@ -39,7 +41,7 @@ public class ReportService {
     }
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Report> insert(Report report){
-        return new CustomResponse<>(this.repository.saveAndFlush(report),false,200,"Ok");
+        return new CustomResponse<>(this.repository.save(report),false,200,"Ok");
     }
     // Falta put
     @Transactional(rollbackFor = {SQLException.class})

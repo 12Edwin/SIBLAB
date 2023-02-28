@@ -29,7 +29,8 @@ public class MachineController {
     @GetMapping(value = "/{id}",produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Optional<Machine>>> getById(@PathVariable Long id){
         Optional<Machine> results = this.service.getById(id).getData();
-        results = castOne(results);
+        if (results != null)
+            results = castOne(results);
         return new ResponseEntity<>(new CustomResponse<>(results,false,200,"Ok"), HttpStatus.OK);
     }
     @PostMapping(value = "/", produces = "application/json")
@@ -40,7 +41,8 @@ public class MachineController {
     public @ResponseBody ResponseEntity<CustomResponse<?>> update(@PathVariable Long id,@RequestBody @Valid MachineDto machine){
         machine.setId(id);
         Optional<Machine> result = Optional.ofNullable(this.service.update(machine.castToMachineToUpdate()).getData());
-        result = castOne(result);
+        if (result != null)
+            result = castOne(result);
         return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.CREATED);
     }
     @DeleteMapping(value = "/{id}",produces = "application/json")
@@ -52,16 +54,18 @@ public class MachineController {
 
     public Optional<Machine> castOne(Optional<Machine> result){
         result.get().setReport(null);
-        result.get().setLaboratory(
-                new LaboratoryDto(
-                        result.get().getLaboratory().getId(),
-                        result.get().getLaboratory().getName(),
-                        result.get().getLaboratory().getDescription(),
-                        result.get().getLaboratory().getStatus(),
-                        result.get().getLaboratory().getMachines(),
-                        result.get().getLaboratory().getBuilding()
-                ).castToLaboratoryToMachine()
-        );
+        if (result.get().getLaboratory() != null) {
+            result.get().setLaboratory(
+                    new LaboratoryDto(
+                            result.get().getLaboratory().getId(),
+                            result.get().getLaboratory().getName(),
+                            result.get().getLaboratory().getDescription(),
+                            result.get().getLaboratory().getStatus(),
+                            result.get().getLaboratory().getMachines(),
+                            result.get().getLaboratory().getBuilding()
+                    ).castToLaboratoryToMachine()
+            );
+        }
         return result;
     }
     public List<Machine> castMany(List<Machine> results){

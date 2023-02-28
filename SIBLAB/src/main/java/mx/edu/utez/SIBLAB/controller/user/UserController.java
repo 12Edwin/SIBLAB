@@ -1,5 +1,6 @@
 package mx.edu.utez.SIBLAB.controller.user;
 
+import mx.edu.utez.SIBLAB.controller.classroom.dtos.ClassroomDto;
 import mx.edu.utez.SIBLAB.controller.period.dto.PeriodDto;
 import mx.edu.utez.SIBLAB.controller.report.dtos.ReportDto;
 import mx.edu.utez.SIBLAB.controller.user.dtos.UserDto;
@@ -31,7 +32,8 @@ public class UserController {
     @GetMapping(value = "/{id}",produces = "application/json")
     public @ResponseBody ResponseEntity<CustomResponse<Optional<User>>> getById(@PathVariable Long id){
         Optional<User> results = this.service.getById(id).getData();
-        results = castOne(results);
+        if (results != null)
+            results = castOne(results);
         return new ResponseEntity<>(new CustomResponse<>(results,false,200,"Ok"),HttpStatus.OK);
     }
     @GetMapping(value = "/role",produces = "application/json")
@@ -57,36 +59,59 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}",produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<User>> update(@Valid @RequestBody UserDto user, @PathVariable Long id){
+    public @ResponseBody ResponseEntity<CustomResponse<Optional<User>>> update(@Valid @RequestBody UserDto user, @PathVariable Long id){
         user.setId(id);
-        return new ResponseEntity<>(this.service.update(user.castToUserToUpdate()),HttpStatus.OK);
+        Optional<User> result = Optional.ofNullable(this.service.update(user.castToUserToUpdate()).getData());
+        if (result != null)
+            result = castOne(result);
+        return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.OK);
     }
 
     public Optional<User> castOne(Optional<User> result){
-        result.get().setReports(
-                result.get().getReports().stream().map(report ->
-                        new ReportDto(
-                                report.getId(),
-                                report.getStatus(),
-                                report.getId_teacher(),
-                                report.getTime_Register().toString(),
-                                report.getTime_Finish().toString(),
-                                report.getDefect(),
-                                report.getUser(),
-                                report.getMachine(),
-                                report.getInfo(),
-                                report.getAttachment()
-                ).castToReportToUser()).collect(Collectors.toList()));
-        result.get().setPeriods(result.get().getPeriods().stream().map(
-                period -> new PeriodDto(
-                        period.getId(),
-                        period.getSemester(),
-                        period.getStart_semester().toString(),
-                        period.getFinish_semester().toString(),
-                        period.getUser(),
-                        period.getClassrooms()
-                ).castToPeriodToUser()
-        ).collect(Collectors.toList()));
+        if (result.get().getReports() != null) {
+            result.get().setReports(
+                    result.get().getReports().stream().map(report ->
+                            new ReportDto(
+                                    report.getId(),
+                                    report.getStatus(),
+                                    report.getId_teacher(),
+                                    report.getTime_Register().toString(),
+                                    report.getTime_Finish().toString(),
+                                    report.getDefect(),
+                                    report.getUser(),
+                                    report.getMachine(),
+                                    report.getInfo(),
+                                    report.getAttachment()
+                            ).castToReportToUser()).collect(Collectors.toList()));
+        }
+        if (result.get().getPeriods() != null) {
+            result.get().setPeriods(result.get().getPeriods().stream().map(
+                    period -> new PeriodDto(
+                            period.getId(),
+                            period.getSemester(),
+                            period.getStart_semester().toString().split(" ")[0].split("-")[2] + "-" +
+                                    period.getStart_semester().toString().split(" ")[0].split("-")[1] + "-" +
+                                    period.getStart_semester().toString().split(" ")[0].split("-")[0],
+
+                            period.getFinish_semester().toString().split(" ")[0].split("-")[2] + "-" +
+                                    period.getFinish_semester().toString().split(" ")[0].split("-")[1] + "-" +
+                                    period.getFinish_semester().toString().split(" ")[0].split("-")[0],
+                            period.getUser(),
+                            period.getClassrooms()
+                    ).castToPeriodToUser()
+            ).collect(Collectors.toList()));
+        }
+        if (result.get().getClassroom() != null){
+            result.get().setClassroom(new ClassroomDto(
+                    result.get().getClassroom().getId(),
+                    result.get().getClassroom().getName(),
+                    result.get().getClassroom().getTotal_students(),
+                    result.get().getClassroom().getCareer(),
+                    result.get().getClassroom().getGrade(),
+                    result.get().getClassroom().getUsers(),
+                    result.get().getClassroom().getPeriod()
+            ).castToClassroomToUser());
+        }
         return result;
     }
     public List<User> castMany(List<User> results){
@@ -99,7 +124,15 @@ public class UserController {
                         user.getEmail(),
                         user.getPassword(),
                         user.getStatus(),
-                        user.getClassroom(),
+                        user.getClassroom() != null ? new ClassroomDto(
+                                user.getClassroom().getId(),
+                                user.getClassroom().getName(),
+                                user.getClassroom().getTotal_students(),
+                                user.getClassroom().getCareer(),
+                                user.getClassroom().getGrade(),
+                                user.getClassroom().getUsers(),
+                                user.getClassroom().getPeriod()
+                        ).castToClassroomToUser():  null,
                         user.getCode(),
                         user.getReports().stream().map(
                                 report -> new ReportDto(
@@ -118,8 +151,13 @@ public class UserController {
                                 period -> new PeriodDto(
                                         period.getId(),
                                         period.getSemester(),
-                                        period.getStart_semester().toString(),
-                                        period.getFinish_semester().toString(),
+                                        period.getStart_semester().toString().split(" ")[0].split("-")[2]+ "-"+
+                                                period.getStart_semester().toString().split(" ")[0].split("-")[1]+ "-"+
+                                                period.getStart_semester().toString().split(" ")[0].split("-")[0],
+
+                                        period.getFinish_semester().toString().split(" ")[0].split("-")[2]+"-"+
+                                                period.getFinish_semester().toString().split(" ")[0].split("-")[1]+"-"+
+                                                period.getFinish_semester().toString().split(" ")[0].split("-")[0],
                                         period.getUser(),
                                         period.getClassrooms()
                                 ).castToPeriodToUser()

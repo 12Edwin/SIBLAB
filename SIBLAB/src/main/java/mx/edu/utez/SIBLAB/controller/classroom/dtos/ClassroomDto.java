@@ -54,4 +54,12 @@ public class ClassroomDto {
     public Classroom castToClassroomToPeriod(){
         return new Classroom(getId(),getName(),getCareer(),getGrade(),getTotal_students(),null,null);
     }
+
+    //user
+    public Classroom castToClassroomToUser(){
+        Period period1 = new Period();
+        if (getPeriod() != null)
+            period1.setId(getPeriod().getId());
+        return new Classroom(getId(),getName(),getCareer(),getGrade(),getTotal_students(),null,period1);
+    }
 }

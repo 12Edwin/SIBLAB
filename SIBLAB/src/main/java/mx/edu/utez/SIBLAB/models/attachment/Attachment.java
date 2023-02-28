@@ -1,16 +1,16 @@
 package mx.edu.utez.SIBLAB.models.attachment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import mx.edu.utez.SIBLAB.models.report.Report;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
 @Entity
-@Table(name = "achievements")
+@Table(name = "attachments")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,7 +33,7 @@ public class Attachment {
     private String name;
 
     @Column(nullable = false)
-    private String group;
+    private String classroom;
 
     //Relationship with report
     @OneToMany(mappedBy = "attachment")

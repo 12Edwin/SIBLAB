@@ -1,7 +1,4 @@
 package mx.edu.utez.SIBLAB.models.building;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

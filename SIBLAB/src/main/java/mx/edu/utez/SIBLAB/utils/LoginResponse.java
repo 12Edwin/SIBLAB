@@ -6,12 +6,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginResponse {
-    private String session;
+    private Long id;
     private String tokenType = "Bearer";
     private String username;
+    private String role;
 
-    public LoginResponse(String accessToken, String username) {
-        this.session = accessToken;
+    public LoginResponse(Long id, String username, String role) {
+        this.id = id;
         this.username = username;
+        this.role = role;
     }
 }

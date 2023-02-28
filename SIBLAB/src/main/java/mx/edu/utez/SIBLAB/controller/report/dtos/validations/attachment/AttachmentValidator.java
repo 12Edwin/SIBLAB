@@ -2,8 +2,6 @@ package mx.edu.utez.SIBLAB.controller.report.dtos.validations.attachment;
 
 import mx.edu.utez.SIBLAB.models.attachment.Attachment;
 import mx.edu.utez.SIBLAB.models.attachment.AttachmentRepository;
-import mx.edu.utez.SIBLAB.models.laboratory.Laboratory;
-import mx.edu.utez.SIBLAB.models.laboratory.LaboratoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;

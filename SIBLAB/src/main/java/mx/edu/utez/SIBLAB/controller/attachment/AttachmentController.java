@@ -38,16 +38,20 @@ public class AttachmentController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CustomResponse<Optional<Attachment>>> getById(@PathVariable Long id){
         Optional<Attachment> attachment= this.service.getById(id).getData();
-        attachment = castToOne(attachment);
+        if (attachment != null)
+            attachment = castToOne(attachment);
         return new ResponseEntity<>(new CustomResponse<>(attachment,false,200,"Ok"),HttpStatus.OK);    }
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse<Attachment>> insert(@RequestBody @Valid AttachmentDto attachment){
         return new ResponseEntity<>(this.service.insert(attachment.castToAttachment()), HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<CustomResponse<Attachment>> update(@RequestBody @Valid AttachmentDto attachment, @PathVariable Long id){
+    public ResponseEntity<CustomResponse<Optional<Attachment>>> update(@RequestBody @Valid AttachmentDto attachment, @PathVariable Long id){
         attachment.setId(id);
-        return new ResponseEntity<>(this.service.update(attachment.castToAttachmentToUpdate()),HttpStatus.CREATED );
+        Optional<Attachment> result = Optional.ofNullable(this.service.update(attachment.castToAttachmentToUpdate()).getData());
+        if (result != null)
+            result = castToOne(result);
+        return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.CREATED );
     }
     @PatchMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<?> changeStatus(@PathVariable Long id,@RequestBody @Valid Attachment attachment){
@@ -66,22 +70,24 @@ public class AttachmentController {
 
 
     public Optional<Attachment> castToOne(Optional<Attachment> attachment){
-        attachment.get().setReport(
-                attachment.get().getReport().stream().map(
-                        report -> new ReportDto(
-                                report.getId(),
-                                report.getStatus(),
-                                report.getId_teacher(),
-                                report.getTime_Register().toString(),
-                                report.getTime_Finish().toString(),
-                                report.getDefect(),
-                                report.getUser(),
-                                report.getMachine(),
-                                report.getInfo(),
-                                report.getAttachment()
-                        ).castToReportToAttach()
-                ).collect(Collectors.toList())
-        );
+        if (attachment.get().getReport() != null) {
+            attachment.get().setReport(
+                    attachment.get().getReport().stream().map(
+                            report -> new ReportDto(
+                                    report.getId(),
+                                    report.getStatus(),
+                                    report.getId_teacher(),
+                                    report.getTime_Register().toString(),
+                                    report.getTime_Finish().toString(),
+                                    report.getDefect(),
+                                    report.getUser(),
+                                    report.getMachine(),
+                                    report.getInfo(),
+                                    report.getAttachment()
+                            ).castToReportToAttach()
+                    ).collect(Collectors.toList())
+            );
+        }
         return attachment;
     }
     public List<Attachment> castToMany(List<Attachment> attachments){
@@ -93,7 +99,7 @@ public class AttachmentController {
                                 attachment.getCreate_at(),
                                 attachment.getStatus(),
                                 attachment.getName(),
-                                attachment.getGroup(),
+                                attachment.getClassroom(),
                                 attachment.getReport().stream().map(
                                         report -> new ReportDto(
                                                 report.getId(),

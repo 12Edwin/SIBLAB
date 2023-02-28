@@ -32,43 +32,50 @@ public class PeriodController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CustomResponse<Optional<Period>>> getById(@PathVariable Long id){
         Optional<Period> period = this.service.getById(id).getData();
-        period = castToOne(period);
+        if (period != null)
+            period = castToOne(period);
         return new ResponseEntity<>(new CustomResponse<>(period,false,200,"Ok"),HttpStatus.OK);    }
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse<Period>> insert(@RequestBody @Valid PeriodDto period){
         return new ResponseEntity<>(this.service.insert(period.castToPeriod()), HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<CustomResponse<Period>> update(@RequestBody @Valid PeriodDto period, @PathVariable Long id){
+    public ResponseEntity<CustomResponse<Optional<Period>>> update(@RequestBody @Valid PeriodDto period, @PathVariable Long id){
         period.setId(id);
-        return new ResponseEntity<>(this.service.update(period.castToPeriodToUpdate()),HttpStatus.CREATED );
+        Optional<Period> result = Optional.ofNullable(this.service.update(period.castToPeriodToUpdate()).getData());
+        if (result != null)
+            result = castToOne(result);
+        return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.CREATED );
     }
 
     public Optional<Period> castToOne(Optional<Period> period){
-        period.get().setClassrooms(period.get().getClassrooms().stream().map(
-                classroom -> new ClassroomDto(
-                        classroom.getId(),
-                        classroom.getName(),
-                        classroom.getTotal_students(),
-                        classroom.getCareer(),
-                        classroom.getGrade(),
-                        classroom.getUsers(),
-                        classroom.getPeriod()).castToClassroomToPeriod()
-        ).collect(Collectors.toList()));
-
-        period.get().setUser(new UserDto(
-                period.get().getUser().getId(),
-                period.get().getUser().getName(),
-                period.get().getUser().getSurname(),
-                period.get().getUser().getEmail(),
-                period.get().getUser().getPassword(),
-                period.get().getUser().getRole(),
-                period.get().getUser().getClassroom(),
-                period.get().getUser().getCode(),
-                period.get().getUser().getStatus(),
-                period.get().getUser().getPeriods(),
-                period.get().getUser().getReports()
-        ).castToUserToPeriod());
+        if (period.get().getClassrooms() != null) {
+            period.get().setClassrooms(period.get().getClassrooms().stream().map(
+                    classroom -> new ClassroomDto(
+                            classroom.getId(),
+                            classroom.getName(),
+                            classroom.getTotal_students(),
+                            classroom.getCareer(),
+                            classroom.getGrade(),
+                            classroom.getUsers(),
+                            classroom.getPeriod()).castToClassroomToPeriod()
+            ).collect(Collectors.toList()));
+        }
+        if (period.get().getUser() != null) {
+            period.get().setUser(new UserDto(
+                    period.get().getUser().getId(),
+                    period.get().getUser().getName(),
+                    period.get().getUser().getSurname(),
+                    period.get().getUser().getEmail(),
+                    period.get().getUser().getPassword(),
+                    period.get().getUser().getRole(),
+                    period.get().getUser().getClassroom(),
+                    period.get().getUser().getCode(),
+                    period.get().getUser().getStatus(),
+                    period.get().getUser().getPeriods(),
+                    period.get().getUser().getReports()
+            ).castToUserToPeriod());
+        }
         return period;
     }
     public List<Period> castToMany(List<Period> periods){

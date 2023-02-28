@@ -34,7 +34,8 @@ public class LaboratoryController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CustomResponse<Optional<Laboratory>>> getById (@PathVariable Long id){
         Optional<Laboratory> laboratory = this.service.getById(id).getData();
-        laboratory = castToOne(laboratory);
+        if (laboratory != null)
+            laboratory = castToOne(laboratory);
         return new ResponseEntity<>(new CustomResponse<>(laboratory,false,200,"Ok"),HttpStatus.OK);    }
 
     @PostMapping(value = "/", produces = "application/json")
@@ -43,9 +44,12 @@ public class LaboratoryController {
     }
 
     @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<CustomResponse<Laboratory>> update(@PathVariable Long id, @RequestBody LaboratoryDto laboratory){
+    public ResponseEntity<CustomResponse<Optional<Laboratory>>> update(@PathVariable Long id, @RequestBody LaboratoryDto laboratory){
         laboratory.setId(id);
-        return new ResponseEntity<>(this.service.update(laboratory.castToLaboratoryToUpdate()),HttpStatus.CREATED );
+        Optional<Laboratory> result = Optional.ofNullable(this.service.update(laboratory.castToLaboratoryToUpdate()).getData());
+        if (result != null)
+            result = castToOne(result);
+        return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.CREATED );
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
@@ -55,28 +59,32 @@ public class LaboratoryController {
 
 
     public Optional<Laboratory> castToOne(Optional<Laboratory> laboratory){
-        laboratory.get().setMachines(laboratory.get().getMachines().stream().map(
-                machine -> new MachineDto(
-                        machine.getId(),
-                        machine.getName(),
-                        machine.getBrand(),
-                        machine.getPath_image(),
-                        machine.getCpu(),
-                        machine.getHard_disk(),
-                        machine.getStatus(),
-                        machine.getSpecific_features(),
-                        machine.getLaboratory(),
-                        machine.getReport()
-                ).castToMachineToLab()
-        ).collect(Collectors.toList()));
-        laboratory.get().setBuilding(
-                new BuildingDto(
-                        laboratory.get().getBuilding().getId(),
-                        laboratory.get().getBuilding().getName(),
-                        laboratory.get().getBuilding().getLocation(),
-                        laboratory.get().getBuilding().getLaboratories()
-                ).castToBuildingToLab()
-        );
+        if (laboratory.get().getMachines() != null) {
+            laboratory.get().setMachines(laboratory.get().getMachines().stream().map(
+                    machine -> new MachineDto(
+                            machine.getId(),
+                            machine.getName(),
+                            machine.getBrand(),
+                            machine.getPath_image(),
+                            machine.getCpu(),
+                            machine.getHard_disk(),
+                            machine.getStatus(),
+                            machine.getSpecific_features(),
+                            machine.getLaboratory(),
+                            machine.getReport()
+                    ).castToMachineToLab()
+            ).collect(Collectors.toList()));
+        }
+        if (laboratory.get().getBuilding() != null) {
+            laboratory.get().setBuilding(
+                    new BuildingDto(
+                            laboratory.get().getBuilding().getId(),
+                            laboratory.get().getBuilding().getName(),
+                            laboratory.get().getBuilding().getLocation(),
+                            laboratory.get().getBuilding().getLaboratories()
+                    ).castToBuildingToLab()
+            );
+        }
         return laboratory;
     }
     public List<Laboratory> castToMany(List<Laboratory> laboratories){

@@ -41,7 +41,7 @@ public class AttachmentDto {
     @MaybeNull
     private List<Report> report;
 
-    @ValidDate(message = "Fecha inválida", dateFormat = "dd-MM-yyyy HH:mm:ss")
+    @ValidDate(message = "Fecha inválida", dateFormat = "yyyy-MM-dd HH:mm:ss")
     private String create_at;
 
     private static Date register;
@@ -61,7 +61,7 @@ public class AttachmentDto {
     }
 
     public void date(){
-        DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setLenient(false);
 
         try {

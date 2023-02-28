@@ -30,16 +30,20 @@ public class BuildingController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CustomResponse<Optional<Building>>> getById(@PathVariable Long id){
         Optional<Building> building = this.service.getById(id).getData();
-        building = castToOne(building);
+        if (building != null)
+            building = castToOne(building);
         return new ResponseEntity<>(new CustomResponse<>(building,false,200,"Ok"),HttpStatus.OK);    }
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse<Building>> insert(@RequestBody BuildingDto building){
         return new ResponseEntity<>(this.service.insert(building.castToBuilding()),HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}",produces = "application/json")
-    public ResponseEntity<CustomResponse<Building>> update(@RequestBody BuildingDto building, @PathVariable Long id){
+    public ResponseEntity<CustomResponse<Optional<Building>>> update(@RequestBody BuildingDto building, @PathVariable Long id){
         building.setId(id);
-        return new ResponseEntity<>(this.service.update(building.castToBuildingToUpdate()),HttpStatus.CREATED);
+        Optional<Building> result = Optional.ofNullable(this.service.update(building.castToBuildingToUpdate()).getData());
+        if (result != null)
+            result = castToOne(result);
+        return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.CREATED);
     }
     @DeleteMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<CustomResponse<Boolean>> delete(@PathVariable Long id){
@@ -47,18 +51,20 @@ public class BuildingController {
     }
 
     public Optional<Building> castToOne(Optional<Building> building){
-        building.get().setLaboratories(
-                building.get().getLaboratories().stream().map(
-                        laboratory -> new LaboratoryDto(
-                                laboratory.getId(),
-                                laboratory.getName(),
-                                laboratory.getDescription(),
-                                laboratory.getStatus(),
-                                laboratory.getMachines(),
-                                laboratory.getBuilding()
-                        ).castToLaboratoryToBuild()
-                ).collect(Collectors.toList())
-        );
+        if (building.get().getLaboratories() != null) {
+            building.get().setLaboratories(
+                    building.get().getLaboratories().stream().map(
+                            laboratory -> new LaboratoryDto(
+                                    laboratory.getId(),
+                                    laboratory.getName(),
+                                    laboratory.getDescription(),
+                                    laboratory.getStatus(),
+                                    laboratory.getMachines(),
+                                    laboratory.getBuilding()
+                            ).castToLaboratoryToBuild()
+                    ).collect(Collectors.toList())
+            );
+        }
         return building;
     }
     public List<Building> castToMany(List<Building> buildings){

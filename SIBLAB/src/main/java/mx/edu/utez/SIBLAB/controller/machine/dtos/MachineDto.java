@@ -60,7 +60,9 @@ public class MachineDto {
     //Report
     public Machine castToMachineToReport(){
         Laboratory lab = new Laboratory();
-        lab.setId(getId_laboratory().getId());
+        if (getId_laboratory() != null) {
+            lab.setId(getId_laboratory().getId());
+        }
         return new Machine(getId(),getName(),getBrand(),getPath_image(),getHard_disk(),getCpu(),getStatus(),getSpecific_features(),null, lab);
     }
     //Laboratory
