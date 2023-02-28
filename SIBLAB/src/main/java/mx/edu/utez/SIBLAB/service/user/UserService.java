@@ -6,6 +6,9 @@ import mx.edu.utez.SIBLAB.models.user.User;
 import mx.edu.utez.SIBLAB.models.user.UserRepository;
 import mx.edu.utez.SIBLAB.utils.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +52,7 @@ public class UserService {
         if (this.repository.existsByEmail(user.getEmail())){
             return new CustomResponse<>(null,true,400,"Usuario existente");
         }
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return new CustomResponse<>(this.repository.saveAndFlush(user), false, 200, "OK");
     }
 
@@ -63,6 +67,7 @@ public class UserService {
             return new CustomResponse<>(null,true,500,"Rol inválido");
         if (!this.groupRepository.existsById(user.getClassroom().getId()))
             return new CustomResponse<>(null,true,500,"Grupo inválido");
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return new CustomResponse<>(this.repository.updateUser(user.getName(), user.getPassword(), user.getRole(), user.getSurname(), user.getClassroom().getId(), user.getId())==1,false,200,"Usuario actualizado");
     }
     @Transactional(rollbackFor = {SQLException.class})

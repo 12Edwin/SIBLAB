@@ -19,14 +19,12 @@ public class UploadService {
     private MachineRepository repository;
     private String imageDir = System.getProperty("user.dir") + "/images/";
     @Transactional(readOnly = true)
-    public Resource getImage(Long id) throws IOException {
-        String imageName = this.repository.findById(id).get().getPath_image();
-        Path imagePath = Paths.get(imageDir + "/" + imageName);
-        Resource resource = new UrlResource(imagePath.toUri());
-        if (resource.exists() && resource.isReadable()) {
-            return resource;
-        } else {
-            throw new FileNotFoundException("La imagen no existe o no es legible");
+    public byte[] getImage(Long id) throws IOException {
+        if (!this.repository.findById(id).get().getPath_image().equals(null)) {
+            String imageName = this.repository.findById(id).get().getPath_image();
+            Path imagePath = Paths.get(imageDir + "/" + imageName);
+            return Files.readAllBytes(imagePath);
         }
+        return null;
     }
 }

@@ -53,12 +53,12 @@ public class UploadController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> getImage(@PathVariable Long id) throws IOException {
-        Resource resource = imageService.getImage(id);
-        if (resource != null) {
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) throws IOException {
+        byte[] imageBytes = this.imageService.getImage(id);
+        if (imageBytes != null) {
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(imageBytes);
         } else {
             return ResponseEntity.notFound().build();
         }
