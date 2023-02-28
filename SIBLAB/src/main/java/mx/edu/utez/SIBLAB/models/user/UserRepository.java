@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     boolean existsByEmail(String email);
+
     @Query(value = "SELECT * FROM users where id_teacher = :id_teacher",nativeQuery = true)
     List<User> findUsersByTeacher(@Param("id_teacher") Long id_teacher);
     @Query(value = "SELECT * FROM users where role = :role",nativeQuery = true)
@@ -18,6 +19,11 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Modifying
     @Query(value = "UPDATE users SET status = :status WHERE id = :id",nativeQuery = true)
     int changeStatusById(@Param("id") Long id, @Param("status") Boolean status);
+
+    @Modifying
+    @Query(value = "UPDATE users SET name = :name, password = :pass, role = :role, surname = :sur, id_classroom = :id_C WHERE id = :id",
+    nativeQuery = true)
+            int updateUser(@Param("name")String name, @Param("pass")String pass, @Param("role")String role, @Param("sur")String sur, @Param("id_C")Long id_C, @Param("id") Long id);
 
     //Validation Dto
     boolean existsByCode(String code);

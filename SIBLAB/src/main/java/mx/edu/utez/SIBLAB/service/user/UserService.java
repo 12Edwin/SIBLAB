@@ -1,5 +1,7 @@
 package mx.edu.utez.SIBLAB.service.user;
 
+import mx.edu.utez.SIBLAB.models.classroom.GroupRepository;
+import mx.edu.utez.SIBLAB.models.role.RoleRepository;
 import mx.edu.utez.SIBLAB.models.user.User;
 import mx.edu.utez.SIBLAB.models.user.UserRepository;
 import mx.edu.utez.SIBLAB.utils.CustomResponse;
@@ -16,6 +18,12 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
 
     @Transactional(readOnly = true)
     public CustomResponse<List<User>> getAll(){
@@ -45,11 +53,17 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public CustomResponse<User> update(User user){
+    public CustomResponse<Boolean> update(User user){
         if (!this.repository.existsById(user.getId())){
             return new CustomResponse<>(null,true,400,"Usuario no encontrado");
         }
-        return new CustomResponse<>(this.repository.saveAndFlush(user),false,200,"Usuario actualizado");
+        if (!(user.getPassword().length() >= 6))
+            return new CustomResponse<>(null,true,500,"Contraseña debe ser mayor a 6 caracteres");
+        if (!this.roleRepository.existsByName(user.getRole()))
+            return new CustomResponse<>(null,true,500,"Rol inválido");
+        if (!this.groupRepository.existsById(user.getClassroom().getId()))
+            return new CustomResponse<>(null,true,500,"Grupo inválido");
+        return new CustomResponse<>(this.repository.updateUser(user.getName(), user.getPassword(), user.getRole(), user.getSurname(), user.getClassroom().getId(), user.getId())==1,false,200,"Usuario actualizado");
     }
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<String> changeStatus(Long id,Boolean status){

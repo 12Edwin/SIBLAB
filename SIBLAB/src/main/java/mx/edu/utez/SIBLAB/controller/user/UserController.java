@@ -59,12 +59,9 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}",produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<Optional<User>>> update(@Valid @RequestBody UserDto user, @PathVariable Long id){
+    public @ResponseBody ResponseEntity<CustomResponse<?>> update(@Valid @RequestBody User user, @PathVariable Long id){
         user.setId(id);
-        Optional<User> result = Optional.ofNullable(this.service.update(user.castToUserToUpdate()).getData());
-        if (result != null)
-            result = castOne(result);
-        return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.OK);
+        return new ResponseEntity<>(this.service.update(user),HttpStatus.OK);
     }
 
     public Optional<User> castOne(Optional<User> result){
