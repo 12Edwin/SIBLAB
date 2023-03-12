@@ -38,34 +38,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        http.cors()
+                .and()
+                .csrf()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/api-siblab/login/")
+                .permitAll();
+
+
+
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api-siblab/login/").permitAll()
-                .antMatchers("/api.siblab/session/").permitAll()
-               // .anyRequest()
-               // .authenticated()
-                .and()
-                .httpBasic()
-                .authenticationEntryPoint(this.customAuthenticationEntryPoint)
-                .and()
+                    .antMatchers("/api-siblab/login/").permitAll()
+                    .antMatchers("/api-siblab/session/").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api-siblab/user/").permitAll()
+                    .anyRequest().authenticated()
+                    .and()
+                .exceptionHandling()
+                    .authenticationEntryPoint(this.customAuthenticationEntryPoint)
+                    .and()
                 .formLogin()
-                .loginProcessingUrl("/api-siblab/login/")
-                .successHandler(this.customAuthenticationSuccessHandler)
-                .failureHandler(this.authenticationFailureHandler)
-                .permitAll()
-                .and()
+                    .loginProcessingUrl("/api-siblab/login/").permitAll()
+                    .successHandler(this.customAuthenticationSuccessHandler)
+                    .failureHandler(this.authenticationFailureHandler)
+                    .permitAll()
+                    .and()
                 .logout()
-                .logoutUrl("/api-siblab/logout/")
-                .logoutSuccessHandler(this.logoutSuccessHandler)
-                .permitAll()
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
-                .and()
+                    .logoutUrl("/api-siblab/logout/")
+                    .logoutSuccessHandler(this.logoutSuccessHandler)
+                    .permitAll()
+                    .deleteCookies("JSESSIONID")
+                    .invalidateHttpSession(true)
+                    .and()
                 .sessionManagement()
-                .maximumSessions(1) // máximo número de sesiones por usuario
-               // .expiredUrl("/login?expired=true") // redirigir a esta URL cuando la sesión expire
-                ;
+                    .maximumSessions(1);
     }
 
     @Bean

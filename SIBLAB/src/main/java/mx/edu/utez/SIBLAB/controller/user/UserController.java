@@ -118,11 +118,11 @@ public class UserController {
         return results.stream()
                 .map(user -> new User(
                         user.getId(),
-                        user.getRole(),
                         user.getName(),
                         user.getSurname(),
                         user.getEmail(),
                         user.getPassword(),
+                        user.getRole(),
                         user.getStatus(),
                         user.getClassroom() != null ? new ClassroomDto(
                                 user.getClassroom().getId(),
