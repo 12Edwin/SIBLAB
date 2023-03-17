@@ -74,8 +74,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
                     .and()
                 .sessionManagement()
-                    .maximumSessions(1);
+                    //.maximumSessions(1)
+        ;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
