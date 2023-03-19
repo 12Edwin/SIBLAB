@@ -1,6 +1,7 @@
 package mx.edu.utez.SIBLAB.service.report;
 
 import mx.edu.utez.SIBLAB.controller.report.dtos.ReportDto;
+import mx.edu.utez.SIBLAB.models.attachment.Attachment;
 import mx.edu.utez.SIBLAB.models.report.Report;
 import mx.edu.utez.SIBLAB.models.report.ReportRepository;
 import mx.edu.utez.SIBLAB.utils.CustomResponse;
@@ -45,9 +46,9 @@ public class ReportService {
     }
     // Falta put
     @Transactional(rollbackFor = {SQLException.class})
-    public CustomResponse<Boolean> changeStatus(Long id,String status){
+    public CustomResponse<Boolean> changeStatus(Long id, String status, Boolean defect, Attachment attachment){
         if (this.repository.existsById(id)){
-            return new CustomResponse<>(this.repository.changeStatusById(id,status) == 1,false,200,"Ok");
+            return new CustomResponse<>(this.repository.changeStatusById(id,status, defect, attachment.getId()) == 1,false,200,"Ok");
         }
         return new CustomResponse<>(null,true,400,"Reporte no encotrado");
     }

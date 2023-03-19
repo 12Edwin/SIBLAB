@@ -24,6 +24,6 @@ public interface ReportRepository extends JpaRepository<Report,Long> {
     @Query(value = "SELECT * FROM reports WHERE status = :status", nativeQuery = true)
     List<Report> findAllByStatus(@Param("status") String status);
     @Modifying
-    @Query(value = "update reports SET status = :status WHERE id = :id",nativeQuery = true)
-    int changeStatusById(@Param("id")Long id, @Param("status")String status);
+    @Query(value = "update reports SET status = :status, defect = :defect, attachment_id = :attachment_id WHERE id = :id",nativeQuery = true)
+    int changeStatusById(@Param("id")Long id, @Param("status")String status, @Param("defect") Boolean defect, @Param("attachment_id") Long attachment_id);
 }

@@ -36,7 +36,7 @@ public class AttachmentDto {
 
     @ValidClassroom(message = "Grupo inválido")
     @NotEmpty(message = "Campo requerido")
-    private String group;
+    private String classroom;
 
     @MaybeNull
     private List<Report> report;
@@ -48,16 +48,16 @@ public class AttachmentDto {
 
     public Attachment castToAttachment(){
         date();
-        return new Attachment(null,getSpecific_report(),register,getStatus(),getName(),getGroup(),null);
+        return new Attachment(null,getSpecific_report(),register,getStatus(),getName(),getClassroom(),null);
     }
     public Attachment castToAttachmentToUpdate(){
         date();
-        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getGroup(),null);
+        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getClassroom(),null);
     }
     //report
     public Attachment castToAttachToReport(){
         date();
-        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getGroup(),null);
+        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getClassroom(),null);
     }
 
     public void date(){

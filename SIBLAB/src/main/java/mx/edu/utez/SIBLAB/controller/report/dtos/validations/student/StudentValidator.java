@@ -18,6 +18,7 @@ public class StudentValidator implements ConstraintValidator<ValidStudent,User> 
 
     @Override
     public boolean isValid(User value, ConstraintValidatorContext constraintContext){
+        if(value == null) return true;
         if (!this.repository.existsById(value.getId())){
             return false;
         }

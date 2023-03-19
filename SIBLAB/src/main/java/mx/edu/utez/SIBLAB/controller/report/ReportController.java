@@ -1,5 +1,6 @@
 package mx.edu.utez.SIBLAB.controller.report;
 
+import mx.edu.utez.SIBLAB.controller.attachment.dto.AttachmentDto;
 import mx.edu.utez.SIBLAB.controller.machine.dtos.MachineDto;
 import mx.edu.utez.SIBLAB.controller.report.dtos.ReportDto;
 import mx.edu.utez.SIBLAB.controller.user.dtos.UserDto;
@@ -62,8 +63,8 @@ public class ReportController {
         return new ResponseEntity<>(this.service.insert(report.castToReport()),HttpStatus.CREATED);
     }
     @PutMapping(value = "/{id}", produces = "application/json")
-    public @ResponseBody ResponseEntity<CustomResponse<Boolean>> update(@RequestBody @Valid ReportDto report, @PathVariable Long id){
-        return new ResponseEntity<>(this.service.changeStatus(id, report.getStatus()),HttpStatus.CREATED);
+    public @ResponseBody ResponseEntity<CustomResponse<Boolean>> update(@RequestBody Report report, @PathVariable Long id){
+        return new ResponseEntity<>(this.service.changeStatus(id, report.getStatus(), report.getDefect(), report.getAttachment()),HttpStatus.CREATED);
     }
 
     public Optional<Report> castOne(Optional<Report> result){
@@ -96,6 +97,15 @@ public class ReportController {
                         result.get().getUser().getReports()
                 ).castToUserToReport()
         );
+        result.get().setAttachment(new AttachmentDto(
+                result.get().getAttachment().getId(),
+                result.get().getAttachment().getSpecific_report(),
+                result.get().getAttachment().getStatus(),
+                result.get().getAttachment().getName(),
+                result.get().getAttachment().getClassroom(),
+                result.get().getAttachment().getReport(),
+                result.get().getAttachment().getCreate_at().toString()
+        ).castToAttachToReport());
         return result;
     }
     public List<Report> castMany(List<Report> results){
@@ -133,7 +143,15 @@ public class ReportController {
                                 report.getMachine().getReport()
                         ).castToMachineToReport(),
                         report.getInfo(),
-                        report.getAttachment()
+                        new AttachmentDto(
+                                report.getAttachment().getId(),
+                                report.getAttachment().getSpecific_report(),
+                                report.getAttachment().getStatus(),
+                                report.getAttachment().getName(),
+                                report.getAttachment().getClassroom(),
+                                report.getAttachment().getReport(),
+                                report.getAttachment().getCreate_at().toString()
+                        ).castToAttachToReport()
 
                 ).castToReportToGet()).collect(Collectors.toList());
     }

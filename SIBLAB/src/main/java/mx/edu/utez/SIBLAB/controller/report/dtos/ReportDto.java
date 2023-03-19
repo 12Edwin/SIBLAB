@@ -43,14 +43,13 @@ public class ReportDto {
     @MaybeNull
     private Boolean defect;
 
-    @ValidStudent(message = "Estudiante inválido") //Sacar id y validar en tabla users
+    //@ValidStudent(message = "Estudiante inválido") //Sacar id y validar en tabla users
     private User student;
 
     @ValidMachine(message = "Máquina inválida") //Sacar id y validar en tabla machines
     private Machine machine;
 
     @NotEmpty(message = "Campo requerido")
-    @Length(min = 10, message = "Escriba un mínimo de 10 caracteres")
     private String info;
 
     @MaybeNull
@@ -61,7 +60,7 @@ public class ReportDto {
     static Date finish;
     public Report castToReport(){
         date();
-        return new Report(null,"Pending_student",getId_teacher(),register,finish,getInfo(),getDefect(),getStudent(),getMachine(),getAttachment());
+        return new Report(null,getStatus(),getId_teacher(),register,finish,getInfo(),getDefect(),getStudent(),getMachine(),getAttachment());
     }
     public Report castToReportToGet(){
         date();

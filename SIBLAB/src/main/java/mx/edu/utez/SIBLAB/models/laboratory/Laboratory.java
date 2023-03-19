@@ -36,7 +36,6 @@ public class Laboratory {
 
     //Relationship with machine
     @OneToMany(mappedBy = "laboratory")
-    @JsonIgnore
     private List<Machine> machines;
 
     //Relationship with building
