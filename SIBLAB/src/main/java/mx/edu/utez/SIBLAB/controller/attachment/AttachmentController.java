@@ -100,6 +100,7 @@ public class AttachmentController {
                                 attachment.getStatus(),
                                 attachment.getName(),
                                 attachment.getClassroom(),
+                                attachment.getEmail(),
                                 attachment.getReport().stream().map(
                                         report -> new ReportDto(
                                                 report.getId(),

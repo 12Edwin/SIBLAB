@@ -35,6 +35,8 @@ public class Attachment {
     @Column(nullable = false)
     private String classroom;
 
+    private String email;
+
     //Relationship with report
     @OneToMany(mappedBy = "attachment")
     private List<Report> report;

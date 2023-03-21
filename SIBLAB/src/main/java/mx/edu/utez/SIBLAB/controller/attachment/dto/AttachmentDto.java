@@ -44,20 +44,22 @@ public class AttachmentDto {
     @ValidDate(message = "Fecha inválida", dateFormat = "yyyy-MM-dd HH:mm:ss")
     private String create_at;
 
+    private String email;
+
     private static Date register;
 
     public Attachment castToAttachment(){
         date();
-        return new Attachment(null,getSpecific_report(),register,getStatus(),getName(),getClassroom(),null);
+        return new Attachment(null,getSpecific_report(),register,getStatus(),getName(),getClassroom(),getEmail(),null);
     }
     public Attachment castToAttachmentToUpdate(){
         date();
-        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getClassroom(),null);
+        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getClassroom(),getEmail(),null);
     }
     //report
     public Attachment castToAttachToReport(){
         date();
-        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getClassroom(),null);
+        return new Attachment(getId(),getSpecific_report(),register,getStatus(),getName(),getClassroom(),getEmail(),null);
     }
 
     public void date(){

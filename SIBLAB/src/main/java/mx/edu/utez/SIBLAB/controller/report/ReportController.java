@@ -104,7 +104,8 @@ public class ReportController {
                 result.get().getAttachment().getName(),
                 result.get().getAttachment().getClassroom(),
                 result.get().getAttachment().getReport(),
-                result.get().getAttachment().getCreate_at().toString()
+                result.get().getAttachment().getCreate_at().toString(),
+                result.get().getAttachment().getEmail()
         ).castToAttachToReport());
         return result;
     }
@@ -150,7 +151,8 @@ public class ReportController {
                                 report.getAttachment().getName(),
                                 report.getAttachment().getClassroom(),
                                 report.getAttachment().getReport(),
-                                report.getAttachment().getCreate_at().toString()
+                                report.getAttachment().getCreate_at().toString(),
+                                report.getAttachment().getEmail()
                         ).castToAttachToReport()
 
                 ).castToReportToGet()).collect(Collectors.toList());
