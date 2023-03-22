@@ -97,16 +97,18 @@ public class ReportController {
                         result.get().getUser().getReports()
                 ).castToUserToReport()
         );
-        result.get().setAttachment(new AttachmentDto(
-                result.get().getAttachment().getId(),
-                result.get().getAttachment().getSpecific_report(),
-                result.get().getAttachment().getStatus(),
-                result.get().getAttachment().getName(),
-                result.get().getAttachment().getClassroom(),
-                result.get().getAttachment().getReport(),
-                result.get().getAttachment().getCreate_at().toString(),
-                result.get().getAttachment().getEmail()
-        ).castToAttachToReport());
+        if (result.get().getAttachment() != null) {
+            result.get().setAttachment(new AttachmentDto(
+                    result.get().getAttachment().getId(),
+                    result.get().getAttachment().getSpecific_report(),
+                    result.get().getAttachment().getStatus(),
+                    result.get().getAttachment().getName(),
+                    result.get().getAttachment().getClassroom(),
+                    result.get().getAttachment().getReport(),
+                    result.get().getAttachment().getCreate_at().toString(),
+                    result.get().getAttachment().getEmail()
+            ).castToAttachToReport());
+        }
         return result;
     }
     public List<Report> castMany(List<Report> results){
@@ -144,7 +146,7 @@ public class ReportController {
                                 report.getMachine().getReport()
                         ).castToMachineToReport(),
                         report.getInfo(),
-                        new AttachmentDto(
+                        report.getAttachment() != null ? new AttachmentDto(
                                 report.getAttachment().getId(),
                                 report.getAttachment().getSpecific_report(),
                                 report.getAttachment().getStatus(),
@@ -153,7 +155,7 @@ public class ReportController {
                                 report.getAttachment().getReport(),
                                 report.getAttachment().getCreate_at().toString(),
                                 report.getAttachment().getEmail()
-                        ).castToAttachToReport()
+                        ).castToAttachToReport() : null
 
                 ).castToReportToGet()).collect(Collectors.toList());
     }
