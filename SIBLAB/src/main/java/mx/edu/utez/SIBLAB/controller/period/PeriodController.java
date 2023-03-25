@@ -2,6 +2,7 @@ package mx.edu.utez.SIBLAB.controller.period;
 
 import mx.edu.utez.SIBLAB.controller.classroom.dtos.ClassroomDto;
 import mx.edu.utez.SIBLAB.controller.period.dto.PeriodDto;
+import mx.edu.utez.SIBLAB.controller.semester.dto.SemesterDto;
 import mx.edu.utez.SIBLAB.controller.user.dtos.UserDto;
 import mx.edu.utez.SIBLAB.models.period.Period;
 import mx.edu.utez.SIBLAB.service.period.PeriodService;
@@ -76,15 +77,38 @@ public class PeriodController {
                     period.get().getUser().getReports()
             ).castToUserToPeriod());
         }
+        if (period.get().getSemester() != null){
+            period.get().setSemester(new SemesterDto(
+                    period.get().getSemester().getId(),
+                    period.get().getSemester().getName(),
+                    period.get().getSemester().getSemester_start().toString().split(" ")[0].split("-")[2] + "-" +
+                            period.get().getSemester().getSemester_start().toString().split(" ")[0].split("-")[1] + "-" +
+                            period.get().getSemester().getSemester_start().toString().split(" ")[0].split("-")[0],
+
+                    period.get().getSemester().getSemester_finish().toString().split(" ")[0].split("-")[2] + "-" +
+                            period.get().getSemester().getSemester_finish().toString().split(" ")[0].split("-")[1] + "-" +
+                            period.get().getSemester().getSemester_finish().toString().split(" ")[0].split("-")[0],
+                    period.get().getSemester().getPeriods()
+            ).castToSemesterToPeriod());
+        }
         return period;
     }
     public List<Period> castToMany(List<Period> periods){
         return periods.stream().map(
                 period -> new Period(
                         period.getId(),
-                        period.getSemester(),
-                        period.getStart_semester(),
-                        period.getFinish_semester(),
+                        new SemesterDto(
+                                period.getSemester().getId(),
+                                period.getSemester().getName(),
+                                period.getSemester().getSemester_start().toString().split(" ")[0].split("-")[2] + "-" +
+                                        period.getSemester().getSemester_start().toString().split(" ")[0].split("-")[1] + "-" +
+                                        period.getSemester().getSemester_start().toString().split(" ")[0].split("-")[0],
+
+                                period.getSemester().getSemester_finish().toString().split(" ")[0].split("-")[2] + "-" +
+                                        period.getSemester().getSemester_finish().toString().split(" ")[0].split("-")[1] + "-" +
+                                        period.getSemester().getSemester_finish().toString().split(" ")[0].split("-")[0],
+                                period.getSemester().getPeriods()
+                        ).castToSemesterToPeriod(),
                         new UserDto(
                                 period.getUser().getId(),
                                 period.getUser().getName(),

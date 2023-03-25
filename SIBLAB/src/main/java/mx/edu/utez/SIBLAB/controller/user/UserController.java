@@ -89,13 +89,6 @@ public class UserController {
                     period -> new PeriodDto(
                             period.getId(),
                             period.getSemester(),
-                            period.getStart_semester().toString().split(" ")[0].split("-")[2] + "-" +
-                                    period.getStart_semester().toString().split(" ")[0].split("-")[1] + "-" +
-                                    period.getStart_semester().toString().split(" ")[0].split("-")[0],
-
-                            period.getFinish_semester().toString().split(" ")[0].split("-")[2] + "-" +
-                                    period.getFinish_semester().toString().split(" ")[0].split("-")[1] + "-" +
-                                    period.getFinish_semester().toString().split(" ")[0].split("-")[0],
                             period.getUser(),
                             period.getClassrooms()
                     ).castToPeriodToUser()
@@ -151,13 +144,6 @@ public class UserController {
                                 period -> new PeriodDto(
                                         period.getId(),
                                         period.getSemester(),
-                                        period.getStart_semester().toString().split(" ")[0].split("-")[2]+ "-"+
-                                                period.getStart_semester().toString().split(" ")[0].split("-")[1]+ "-"+
-                                                period.getStart_semester().toString().split(" ")[0].split("-")[0],
-
-                                        period.getFinish_semester().toString().split(" ")[0].split("-")[2]+"-"+
-                                                period.getFinish_semester().toString().split(" ")[0].split("-")[1]+"-"+
-                                                period.getFinish_semester().toString().split(" ")[0].split("-")[0],
                                         period.getUser(),
                                         period.getClassrooms()
                                 ).castToPeriodToUser()

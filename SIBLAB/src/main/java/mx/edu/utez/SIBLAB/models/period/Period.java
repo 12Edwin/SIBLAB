@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.SIBLAB.models.classroom.Classroom;
+import mx.edu.utez.SIBLAB.models.semester.Semester;
 import mx.edu.utez.SIBLAB.models.user.User;
 
 import javax.persistence.*;
@@ -23,14 +24,10 @@ public class Period {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String semester;
-
-    @Column(nullable = false)
-    private Date start_semester;
-
-    @Column(nullable = false)
-    private Date finish_semester;
+    //Relationship with semester
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_semester")
+    private Semester semester;
 
     //Relationship with user
     @ManyToOne(fetch = FetchType.LAZY)

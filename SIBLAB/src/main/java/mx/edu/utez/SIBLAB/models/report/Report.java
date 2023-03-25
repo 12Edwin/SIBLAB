@@ -40,7 +40,7 @@ public class Report {
 
     //Relationship with users
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user",nullable = false)
+    @JoinColumn(name = "id_user")
     private User user;
 
     //Relationship with machine

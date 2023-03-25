@@ -74,13 +74,6 @@ public class ClassroomController {
             classroom.get().setPeriod(new PeriodDto(
                     classroom.get().getPeriod().getId(),
                     classroom.get().getPeriod().getSemester(),
-                    classroom.get().getPeriod().getStart_semester().toString().split(" ")[0].split("-")[2] + "-" +
-                            classroom.get().getPeriod().getStart_semester().toString().split(" ")[0].split("-")[1] + "-" +
-                            classroom.get().getPeriod().getStart_semester().toString().split(" ")[0].split("-")[0],
-
-                    classroom.get().getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[2] + "-" +
-                            classroom.get().getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[1] + "-" +
-                            classroom.get().getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[0],
                     classroom.get().getPeriod().getUser(),
                     classroom.get().getPeriod().getClassrooms()
             ).castToPeriodToClass());
@@ -113,13 +106,6 @@ public class ClassroomController {
                         new PeriodDto(
                                 classroom.getPeriod().getId(),
                                 classroom.getPeriod().getSemester(),
-                                classroom.getPeriod().getStart_semester().toString().split(" ")[0].split("-")[2]+"-"+
-                                        classroom.getPeriod().getStart_semester().toString().split(" ")[0].split("-")[1]+"-"+
-                                        classroom.getPeriod().getStart_semester().toString().split(" ")[0].split("-")[0],
-
-                                classroom.getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[2]+"-"+
-                                        classroom.getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[1]+"-"+
-                                        classroom.getPeriod().getFinish_semester().toString().split(" ")[0].split("-")[0],
                                 classroom.getPeriod().getUser(),
                                 classroom.getPeriod().getClassrooms()
                         ).castToPeriodToClass()
