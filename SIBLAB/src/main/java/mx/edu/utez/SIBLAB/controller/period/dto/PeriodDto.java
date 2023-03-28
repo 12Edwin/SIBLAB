@@ -39,8 +39,12 @@ public class PeriodDto {
     //user
     public Period castToPeriodToUser(){
         Semester semester1 = new Semester();
-        if (getSemester() != null)
+        if (semester1 != null) {
             semester1.setId(getSemester().getId());
+            semester1.setName(getSemester().getName());
+            semester1.setSemester_start(getSemester().getSemester_start());
+            semester1.setSemester_finish(getSemester().getSemester_finish());
+        }
 
         return new Period(getId(),semester1,null,null);
     }
@@ -51,8 +55,12 @@ public class PeriodDto {
             user1.setId(getUser_id().getId());
         }
         Semester semester1 = new Semester();
-        if (semester1 != null)
+        if (semester1 != null) {
             semester1.setId(getSemester().getId());
+            semester1.setName(getSemester().getName());
+            semester1.setSemester_start(getSemester().getSemester_start());
+            semester1.setSemester_finish(getSemester().getSemester_finish());
+        }
 
         return new Period(getId(),semester1,user1,null);
     }
