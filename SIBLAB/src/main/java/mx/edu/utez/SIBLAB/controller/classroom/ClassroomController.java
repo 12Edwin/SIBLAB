@@ -103,12 +103,12 @@ public class ClassroomController {
                                         user.getReports()
                                 ).castToUserToClass()
                         ).collect(Collectors.toList()),
-                        new PeriodDto(
+                        classroom.getPeriod() != null ? new PeriodDto(
                                 classroom.getPeriod().getId(),
                                 classroom.getPeriod().getSemester(),
                                 classroom.getPeriod().getUser(),
                                 classroom.getPeriod().getClassrooms()
-                        ).castToPeriodToClass()
+                        ).castToPeriodToClass() : null
                 )
         ).collect(Collectors.toList());
     }
