@@ -100,13 +100,13 @@ public class PeriodController {
                         new SemesterDto(
                                 period.getSemester().getId(),
                                 period.getSemester().getName(),
-                                period.getSemester().getSemester_start().toString().split(" ")[0].split("-")[2] + "-" +
+                                period.getSemester().getSemester_start().toString().split(" ")[0].split("-")[0] + "-" +
                                         period.getSemester().getSemester_start().toString().split(" ")[0].split("-")[1] + "-" +
-                                        period.getSemester().getSemester_start().toString().split(" ")[0].split("-")[0],
+                                        period.getSemester().getSemester_start().toString().split(" ")[0].split("-")[2],
 
-                                period.getSemester().getSemester_finish().toString().split(" ")[0].split("-")[2] + "-" +
+                                period.getSemester().getSemester_finish().toString().split(" ")[0].split("-")[0] + "-" +
                                         period.getSemester().getSemester_finish().toString().split(" ")[0].split("-")[1] + "-" +
-                                        period.getSemester().getSemester_finish().toString().split(" ")[0].split("-")[0],
+                                        period.getSemester().getSemester_finish().toString().split(" ")[0].split("-")[2],
                                 period.getSemester().getPeriods()
                         ).castToSemesterToPeriod(),
                         new UserDto(

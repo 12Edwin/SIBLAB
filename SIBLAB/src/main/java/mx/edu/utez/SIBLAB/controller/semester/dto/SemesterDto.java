@@ -56,7 +56,7 @@ public class SemesterDto {
     }
 
     public void date(){
-        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
 
         try {
