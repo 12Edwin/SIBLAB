@@ -55,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api-siblab/login/").permitAll()
                     .antMatchers("/api-siblab/session/").permitAll()
                     .antMatchers(HttpMethod.POST, "/api-siblab/user/").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api-siblab/classroom/").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .exceptionHandling()

@@ -25,8 +25,8 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("http://44.214.206.7:3000"));
-        config.setAllowedOrigins(List.of("http://44.214.206.7:3000"));
+        config.setAllowedOriginPatterns(List.of("http://44.214.206.7:3000", "http://192.168.100.8:19000"));
+        config.setAllowedOrigins(List.of("http://44.214.206.7:3000", "http://192.168.100.8:19000"));
         //config.setAllowedOrigins(Collections.singletonList("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("JSESSION","Authorization", "Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
