@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utez.SIBLAB.controller.machine.dtos.laboratory.ValidLaboratory;
+import mx.edu.utez.SIBLAB.models.building.Building;
 import mx.edu.utez.SIBLAB.models.laboratory.Laboratory;
 import mx.edu.utez.SIBLAB.models.machine.Machine;
 import mx.edu.utez.SIBLAB.models.report.Report;
@@ -62,6 +63,11 @@ public class MachineDto {
         Laboratory lab = new Laboratory();
         if (getId_laboratory() != null) {
             lab.setId(getId_laboratory().getId());
+            lab.setName(getId_laboratory().getName());
+            lab.setDescription(getId_laboratory().getDescription());
+            Building building = new Building();
+            building.setId(getId_laboratory().getBuilding().getId());
+            lab.setBuilding(building);
         }
         return new Machine(getId(),getName(),getBrand(),getPath_image(),getHard_disk(),getCpu(),getStatus(),getSpecific_features(),null, lab);
     }
