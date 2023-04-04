@@ -32,7 +32,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         User user = this.repository.findByEmail(username);
 
         // Crear una instancia de LoginResponse con los datos obtenidos
-        LoginResponse loginResponse = new LoginResponse(user.getId(), username, user.getRole(), user.getName());
+        LoginResponse loginResponse = new LoginResponse(user.getId(), username, user.getRole(), user.getName(),user.getSurname());
 
         // Convertir la instancia de LoginResponse a un objeto JSON
         String loginResponseJson = objectMapper.writeValueAsString(loginResponse);

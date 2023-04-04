@@ -81,13 +81,13 @@ public class PeriodController {
             period.get().setSemester(new SemesterDto(
                     period.get().getSemester().getId(),
                     period.get().getSemester().getName(),
-                    period.get().getSemester().getSemester_start().toString().split(" ")[0].split("-")[2] + "-" +
+                    period.get().getSemester().getSemester_start().toString().split(" ")[0].split("-")[0] + "-" +
                             period.get().getSemester().getSemester_start().toString().split(" ")[0].split("-")[1] + "-" +
-                            period.get().getSemester().getSemester_start().toString().split(" ")[0].split("-")[0],
+                            period.get().getSemester().getSemester_start().toString().split(" ")[0].split("-")[2],
 
-                    period.get().getSemester().getSemester_finish().toString().split(" ")[0].split("-")[2] + "-" +
+                    period.get().getSemester().getSemester_finish().toString().split(" ")[0].split("-")[0] + "-" +
                             period.get().getSemester().getSemester_finish().toString().split(" ")[0].split("-")[1] + "-" +
-                            period.get().getSemester().getSemester_finish().toString().split(" ")[0].split("-")[0],
+                            period.get().getSemester().getSemester_finish().toString().split(" ")[0].split("-")[2],
                     period.get().getSemester().getPeriods()
             ).castToSemesterToPeriod());
         }

@@ -67,6 +67,7 @@ public class MachineDto {
             lab.setDescription(getId_laboratory().getDescription());
             Building building = new Building();
             building.setId(getId_laboratory().getBuilding().getId());
+            building.setName((getId_laboratory().getBuilding().getName()));
             lab.setBuilding(building);
         }
         return new Machine(getId(),getName(),getBrand(),getPath_image(),getHard_disk(),getCpu(),getStatus(),getSpecific_features(),null, lab);

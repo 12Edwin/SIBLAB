@@ -21,9 +21,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
     int changeStatusById(@Param("id") Long id, @Param("status") Boolean status);
 
     @Modifying
-    @Query(value = "UPDATE users SET name = :name, password = :pass, role = :role, surname = :sur, id_classroom = :id_C WHERE id = :id",
+    @Query(value = "UPDATE users SET name = :name, password = :pass, role = :role, surname = :sur WHERE id = :id",
     nativeQuery = true)
-            int updateUser(@Param("name")String name, @Param("pass")String pass, @Param("role")String role, @Param("sur")String sur, @Param("id_C")Long id_C, @Param("id") Long id);
+            int updateUser(@Param("name")String name, @Param("pass")String pass, @Param("role")String role, @Param("sur")String sur, @Param("id") Long id);
 
     //Validation Dto
     boolean existsByCode(String code);

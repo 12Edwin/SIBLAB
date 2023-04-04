@@ -65,10 +65,9 @@ public class UserService {
             return new CustomResponse<>(null,true,500,"Contraseña debe ser mayor a 6 caracteres");
         if (!this.roleRepository.existsByName(user.getRole()))
             return new CustomResponse<>(null,true,500,"Rol inválido");
-        if (!this.groupRepository.existsById(user.getClassroom().getId()))
-            return new CustomResponse<>(null,true,500,"Grupo inválido");
+
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return new CustomResponse<>(this.repository.updateUser(user.getName(), user.getPassword(), user.getRole(), user.getSurname(), user.getClassroom().getId(), user.getId())==1,false,200,"Usuario actualizado");
+        return new CustomResponse<>(this.repository.updateUser(user.getName(), user.getPassword(), user.getRole(), user.getSurname(),  user.getId())==1,false,200,"Usuario actualizado");
     }
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<String> changeStatus(Long id,Boolean status){
