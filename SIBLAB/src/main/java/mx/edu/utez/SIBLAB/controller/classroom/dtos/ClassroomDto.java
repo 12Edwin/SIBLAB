@@ -39,15 +39,13 @@ public class ClassroomDto {
     @MaybeNull
     private List<User> users;
 
-    @ValidPeriod(message = "Periodo inválido")
-    @MaybeNull
-    private Period period;
+    private List<Period> periods;
 
     public Classroom castToClassroom (){
-        return new Classroom(null,getName(),getCareer(),getGrade(),getTotal_students(),null,getPeriod());
+        return new Classroom(null,getName(),getCareer(),getGrade(),getTotal_students(),null,null);
     }
     public Classroom castToClassroomToUpdate (){
-        return new Classroom(getId(),getName(),getCareer(),getGrade(),getTotal_students(),null,getPeriod());
+        return new Classroom(getId(),getName(),getCareer(),getGrade(),getTotal_students(),null,null);
     }
 
     //Period
@@ -57,9 +55,6 @@ public class ClassroomDto {
 
     //user
     public Classroom castToClassroomToUser(){
-        Period period1 = new Period();
-        if (getPeriod() != null)
-            period1.setId(getPeriod().getId());
-        return new Classroom(getId(),getName(),getCareer(),getGrade(),getTotal_students(),null,period1);
+        return new Classroom(getId(),getName(),getCareer(),getGrade(),getTotal_students(),null,null);
     }
 }

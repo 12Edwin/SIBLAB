@@ -82,21 +82,23 @@ public class ReportController {
                         result.get().getMachine().getReport()
                 ).castToMachineToReport()
         );
-        result.get().setUser(
-                new UserDto(
-                        result.get().getUser().getId(),
-                        result.get().getUser().getName(),
-                        result.get().getUser().getSurname(),
-                        result.get().getUser().getEmail(),
-                        result.get().getUser().getPassword(),
-                        result.get().getUser().getRole(),
-                        result.get().getUser().getClassroom(),
-                        result.get().getUser().getCode(),
-                        result.get().getUser().getStatus(),
-                        result.get().getUser().getPeriods(),
-                        result.get().getUser().getReports()
-                ).castToUserToReport()
-        );
+        if(result.get().getUser() != null) {
+            result.get().setUser(
+                    new UserDto(
+                            result.get().getUser().getId(),
+                            result.get().getUser().getName(),
+                            result.get().getUser().getSurname(),
+                            result.get().getUser().getEmail(),
+                            result.get().getUser().getPassword(),
+                            result.get().getUser().getRole(),
+                            result.get().getUser().getClassroom(),
+                            result.get().getUser().getCode(),
+                            result.get().getUser().getStatus(),
+                            result.get().getUser().getPeriods(),
+                            result.get().getUser().getReports()
+                    ).castToUserToReport()
+            );
+        }
         if (result.get().getAttachment() != null) {
             result.get().setAttachment(new AttachmentDto(
                     result.get().getAttachment().getId(),
@@ -120,7 +122,7 @@ public class ReportController {
                         report.getTime_Register().toString(),
                         report.getTime_Finish().toString(),
                         report.getDefect(),
-                        new UserDto(
+                        report.getUser() != null ? new UserDto(
                                 report.getUser().getId(),
                                 report.getUser().getName(),
                                 report.getUser().getSurname(),
@@ -132,7 +134,7 @@ public class ReportController {
                                 report.getUser().getStatus(),
                                 report.getUser().getPeriods(),
                                 report.getUser().getReports()
-                        ).castToUserToReport(),
+                        ).castToUserToReport(): null,
                         new MachineDto(
                                 report.getMachine().getId(),
                                 report.getMachine().getName(),

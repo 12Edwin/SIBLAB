@@ -59,7 +59,7 @@ public class SemesterController {
                             period.getId(),
                             period.getSemester(),
                             period.getUser(),
-                            period.getClassrooms()
+                            period.getClassroom()
                     ).castToPeriodToSemester()
             ).collect(Collectors.toList()));
         }
@@ -76,7 +76,7 @@ public class SemesterController {
                         period.getId(),
                         period.getSemester(),
                         period.getUser(),
-                        period.getClassrooms()
+                        period.getClassroom()
                 ).castToPeriodToSemester()).collect(Collectors.toList()) : null
         )).collect(Collectors.toList());
     }

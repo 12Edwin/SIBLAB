@@ -40,7 +40,6 @@ public class Classroom {
     private List<User> users;
 
     //Relationship with period
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "period_id")
-    private Period period;
+    @OneToMany(mappedBy = "classroom",fetch = FetchType.LAZY)
+    private List<Period> period;
 }

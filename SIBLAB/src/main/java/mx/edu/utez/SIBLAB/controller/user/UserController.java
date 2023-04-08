@@ -90,7 +90,7 @@ public class UserController {
                             period.getId(),
                             period.getSemester(),
                             period.getUser(),
-                            period.getClassrooms()
+                            period.getClassroom()
                     ).castToPeriodToUser()
             ).collect(Collectors.toList()));
         }
@@ -145,7 +145,7 @@ public class UserController {
                                         period.getId(),
                                         period.getSemester(),
                                         period.getUser(),
-                                        period.getClassrooms()
+                                        period.getClassroom()
                                 ).castToPeriodToUser()
                         ).collect(Collectors.toList())
                 )).collect(Collectors.toList());

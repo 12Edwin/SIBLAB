@@ -49,18 +49,22 @@ public class PeriodController {
         return new ResponseEntity<>(new CustomResponse<>(result,false,200,"Ok"),HttpStatus.CREATED );
     }
 
+    @DeleteMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<CustomResponse<?>> delete (@PathVariable Long id){
+        return  new ResponseEntity<>(this.service.delete(id),HttpStatus.OK);
+    }
+
     public Optional<Period> castToOne(Optional<Period> period){
-        if (period.get().getClassrooms() != null) {
-            period.get().setClassrooms(period.get().getClassrooms().stream().map(
-                    classroom -> new ClassroomDto(
-                            classroom.getId(),
-                            classroom.getName(),
-                            classroom.getTotal_students(),
-                            classroom.getCareer(),
-                            classroom.getGrade(),
-                            classroom.getUsers(),
-                            classroom.getPeriod()).castToClassroomToPeriod()
-            ).collect(Collectors.toList()));
+        if (period.get().getClassroom() != null) {
+            period.get().setClassroom(new ClassroomDto(
+                    period.get().getClassroom().getId(),
+                    period.get().getClassroom().getName(),
+                    period.get().getClassroom().getTotal_students(),
+                    period.get().getClassroom().getCareer(),
+                    period.get().getClassroom().getGrade(),
+                    period.get().getClassroom().getUsers(),
+                    period.get().getClassroom().getPeriod()
+            ).castToClassroomToPeriod());
         }
         if (period.get().getUser() != null) {
             period.get().setUser(new UserDto(
@@ -122,17 +126,15 @@ public class PeriodController {
                                 period.getUser().getPeriods(),
                                 period.getUser().getReports()
                         ).castToUserToPeriod(),
-                        period.getClassrooms().stream().map(
-                                classroom -> new ClassroomDto(
-                                        classroom.getId(),
-                                        classroom.getName(),
-                                        classroom.getTotal_students(),
-                                        classroom.getCareer(),
-                                        classroom.getGrade(),
-                                        classroom.getUsers(),
-                                        classroom.getPeriod()
+                        new ClassroomDto(
+                                period.getClassroom().getId(),
+                                period.getClassroom().getName(),
+                                period.getClassroom().getTotal_students(),
+                                period.getClassroom().getCareer(),
+                                period.getClassroom().getGrade(),
+                                period.getClassroom().getUsers(),
+                                period.getClassroom().getPeriod()
                                 ).castToClassroomToPeriod()
-                        ).collect(Collectors.toList())
                 )
         ).collect(Collectors.toList());
     }

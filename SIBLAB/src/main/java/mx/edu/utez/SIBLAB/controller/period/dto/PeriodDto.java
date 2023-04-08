@@ -26,33 +26,45 @@ public class PeriodDto {
     @ValidUser(message = "Profesor inválido")
     private User user_id;
 
-    @MaybeNull
-    private List<Classroom> classrooms;
+    private Classroom classrooms_id;
 
     public Period castToPeriod(){
-        return new Period(null,getSemester(),getUser_id(),null);
+        return new Period(null,getSemester(),getUser_id(),getClassrooms_id());
     }
     public Period castToPeriodToUpdate(){
-        return new Period(getId(),getSemester(),getUser_id(),null);
+        return new Period(getId(),getSemester(),getUser_id(),getClassrooms_id());
     }
 
     //user
     public Period castToPeriodToUser(){
         Semester semester1 = new Semester();
-        if (semester1 != null) {
+        if (getSemester() != null) {
             semester1.setId(getSemester().getId());
             semester1.setName(getSemester().getName());
             semester1.setSemester_start(getSemester().getSemester_start());
             semester1.setSemester_finish(getSemester().getSemester_finish());
         }
+        Classroom classroom = new Classroom();
+        if (getClassrooms_id() != null){
+            classroom.setId(getClassrooms_id().getId());
+            classroom.setName(getClassrooms_id().getName());
+            classroom.setGrade(getClassrooms_id().getGrade());
+            classroom.setCareer(getClassrooms_id().getCareer());
+            classroom.setTotal_students(getClassrooms_id().getTotal_students());
+        }
 
-        return new Period(getId(),semester1,null,null);
+        return new Period(getId(),semester1,null,classroom);
     }
     //classroom
     public Period castToPeriodToClass(){
         User user1= new User();
         if (getUser_id() != null) {
             user1.setId(getUser_id().getId());
+            user1.setEmail(getUser_id().getEmail());
+            user1.setRole(getUser_id().getRole());
+            user1.setStatus(getUser_id().getStatus());
+            user1.setName(getClassrooms_id().getName());
+            user1.setSurname(getUser_id().getSurname());
         }
         Semester semester1 = new Semester();
         if (semester1 != null) {
@@ -71,6 +83,14 @@ public class PeriodDto {
         if (getUser_id() != null){
             user.setId(getUser_id().getId());
         }
-        return new Period(getId(),null,user,null);
+        Classroom classroom = new Classroom();
+        if (getClassrooms_id() != null){
+            classroom.setId(getClassrooms_id().getId());
+            classroom.setName(getClassrooms_id().getName());
+            classroom.setGrade(getClassrooms_id().getGrade());
+            classroom.setCareer(getClassrooms_id().getCareer());
+            classroom.setTotal_students(getClassrooms_id().getTotal_students());
+        }
+        return new Period(getId(),null,user,classroom);
     }
 }

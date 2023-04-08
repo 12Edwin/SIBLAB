@@ -71,12 +71,13 @@ public class ClassroomController {
             ).collect(Collectors.toList()));
         }
         if (classroom.get().getPeriod() != null) {
-            classroom.get().setPeriod(new PeriodDto(
-                    classroom.get().getPeriod().getId(),
-                    classroom.get().getPeriod().getSemester(),
-                    classroom.get().getPeriod().getUser(),
-                    classroom.get().getPeriod().getClassrooms()
-            ).castToPeriodToClass());
+            classroom.get().setPeriod(classroom.get().getPeriod().stream().map(period -> new PeriodDto(
+                    period.getId(),
+                    period.getSemester(),
+                    period.getUser(),
+                    period.getClassroom()
+                    ).castToPeriodToClass()).collect(Collectors.toList())
+            );
         }
         return classroom;
     }
@@ -103,12 +104,12 @@ public class ClassroomController {
                                         user.getReports()
                                 ).castToUserToClass()
                         ).collect(Collectors.toList()),
-                        classroom.getPeriod() != null ? new PeriodDto(
-                                classroom.getPeriod().getId(),
-                                classroom.getPeriod().getSemester(),
-                                classroom.getPeriod().getUser(),
-                                classroom.getPeriod().getClassrooms()
-                        ).castToPeriodToClass() : null
+                        classroom.getPeriod() != null ? classroom.getPeriod().stream().map(period -> new PeriodDto(
+                                period.getId(),
+                                period.getSemester(),
+                                period.getUser(),
+                                period.getClassroom()
+                        ).castToPeriodToClass()).collect(Collectors.toList()): null
                 )
         ).collect(Collectors.toList());
     }

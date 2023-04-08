@@ -45,7 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/api-siblab/login/")
-                .permitAll();
+                .permitAll()
+                .antMatchers(HttpMethod.GET,"/api-siblab/session/").permitAll()
+                .antMatchers(HttpMethod.POST, "/api-siblab/user/").permitAll()
+        ;
 
 
 
@@ -53,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/api-siblab/login/").permitAll()
-                    .antMatchers("/api-siblab/session/").permitAll()
+                    .antMatchers(HttpMethod.GET,"/api-siblab/session/").permitAll()
                     .antMatchers(HttpMethod.POST, "/api-siblab/user/").permitAll()
                     .antMatchers(HttpMethod.GET, "/api-siblab/classroom/").permitAll()
                     .anyRequest().authenticated()

@@ -40,4 +40,17 @@ public class PeriodService {
         return new CustomResponse<>(null,true,400,"Periodo no encontrado");
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public CustomResponse<?> delete(Long id){
+        if (this.repository.existsById(id)){
+            try {
+                this.repository.deleteById(id);
+                return new CustomResponse<>(true,false,200,"Ok");
+            }catch (Exception e){
+                return new CustomResponse<>(true,false,500,"Ocurrió un error");
+            }
+        }
+        return new CustomResponse<>(true,false,400,"Periodo no encontrado");
+    }
+
 }
