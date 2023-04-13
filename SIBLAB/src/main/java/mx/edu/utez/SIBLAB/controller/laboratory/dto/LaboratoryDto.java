@@ -1,7 +1,5 @@
 package mx.edu.utez.SIBLAB.controller.laboratory.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +9,6 @@ import mx.edu.utez.SIBLAB.models.building.Building;
 import mx.edu.utez.SIBLAB.models.laboratory.Laboratory;
 import mx.edu.utez.SIBLAB.models.machine.Machine;
 import net.bytebuddy.utility.nullability.MaybeNull;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 @Getter

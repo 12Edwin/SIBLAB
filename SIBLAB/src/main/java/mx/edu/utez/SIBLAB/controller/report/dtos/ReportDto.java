@@ -105,7 +105,7 @@ public class ReportDto {
 
         try {
             register = sdf.parse(getTime_Register());
-            finish = sdf.parse(getTime_Register());
+            finish = sdf.parse(getTime_Finish());
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
